@@ -1,4 +1,4 @@
-package io.github.thallesyan.gamification_api;
+package io.github.thallesyan.gamification_api.infrastructure;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
