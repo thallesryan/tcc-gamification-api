@@ -1,4 +1,4 @@
-package io.github.thallesyan.gamification_api.infrastructure.persistence.entities;
+package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation;
 
 import jakarta.persistence.*;
 import lombok.Data;
