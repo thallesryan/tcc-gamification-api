@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {GoalPersistenceMapper.class})
 public interface MissionPersistenceMapper {
 
-    @Mapping(target = "goals", source = "goal")
+    @Mapping(target = "goals", source = "goals")
     @Mapping(target = "rules", ignore = true)
     @Mapping(target = "difficultyLevel", ignore = true)
     @Mapping(target = "estimatedDurationHours", ignore = true)
@@ -20,7 +20,7 @@ public interface MissionPersistenceMapper {
     @Mapping(target = "updatedAt", ignore = true)
     MissionJPA toMissionJPA(Mission mission);
 
-    @Mapping(target = "goal", source = "goals")
+    @Mapping(target = "goals", source = "goals")
     @Mapping(target = "identifier", source = "identifier")
     @Mapping(target = "title", source = "title")
     @Mapping(target = "description", source = "description")

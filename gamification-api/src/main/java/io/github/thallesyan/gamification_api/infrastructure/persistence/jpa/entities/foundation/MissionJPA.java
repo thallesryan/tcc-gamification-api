@@ -24,7 +24,7 @@ public class MissionJPA extends BaseInformationJPA {
     @Column(name = "estimated_duration_hours")
     private Integer estimatedDurationHours;
     
-    @OneToMany(mappedBy = "mission", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "mission", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<GoalJPA> goals = new ArrayList<>();
     
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

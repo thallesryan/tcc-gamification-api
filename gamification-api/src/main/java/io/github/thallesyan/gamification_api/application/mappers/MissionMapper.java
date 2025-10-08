@@ -9,19 +9,19 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {GoalMapper.class})
 public interface MissionMapper {
 
-    @Mapping(target = "goal", source = "goals")
+    @Mapping(target = "goals", source = "goals")
     @Mapping(target = "identifier", source = "identifier")
     @Mapping(target = "title", source = "title")
     @Mapping(target = "description", source = "description")
     Mission toMission(MissionResponseDTO missionResponseDTO);
 
-    @Mapping(target = "goal", source = "goals")
+    @Mapping(target = "goals", source = "goals")
     @Mapping(target = "identifier", ignore = true)
     @Mapping(target = "title", source = "title")
     @Mapping(target = "description", source = "description")
     Mission toMission(MissionRequestDTO missionRequestDTO);
 
-    @Mapping(target = "goals", source = "goal")
+    @Mapping(target = "goals", source = "goals")
     @Mapping(target = "identifier", source = "identifier")
     @Mapping(target = "title", source = "title")
     @Mapping(target = "description", source = "description")

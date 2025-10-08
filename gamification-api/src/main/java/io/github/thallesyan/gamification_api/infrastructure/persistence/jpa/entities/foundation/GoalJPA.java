@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class GoalJPA extends BaseInformationJPA {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private MissionJPA mission;
 }

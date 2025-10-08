@@ -22,9 +22,4 @@ public class MissionController {
         var createdMission = missionApplication.createMission(missionMapper.toMission(missionRequestDTO));
         return new ResponseEntity<>(missionMapper.toMissionResponseDTO(createdMission), HttpStatus.CREATED);
     }
-
-    @GetMapping("hello")
-    public String hello() {
-        return "Hello World!";
-    }
 }

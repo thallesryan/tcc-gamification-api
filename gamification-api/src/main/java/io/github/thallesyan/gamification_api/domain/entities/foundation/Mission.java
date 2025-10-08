@@ -11,5 +11,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Mission extends BaseInformation {
-    private List<Goal> goal;
+    private List<Goal> goals;
 }
