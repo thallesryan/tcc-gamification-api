@@ -1,5 +1,8 @@
-package io.github.thallesyan.gamification_api.infrastructure.persistence.entities;
+package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress;
 
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.BaseEntityJPA;
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.MissionJPA;
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.UserJPA;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,10 +17,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class UserMissionJPA extends BaseEntityJPA {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

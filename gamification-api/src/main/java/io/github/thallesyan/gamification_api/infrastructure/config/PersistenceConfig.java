@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "io.github.thallesyan.gamification_api.infrastructure.persistence.repositories")
-@EntityScan(basePackages = "io.github.thallesyan.gamification_api.infrastructure.persistence.entities")
+@EnableJpaRepositories(basePackages = "io.github.thallesyan.gamification_api.infrastructure.persistence.jpa")
+@EntityScan(basePackages = "io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities")
 @EnableTransactionManagement
 public class PersistenceConfig {
 }

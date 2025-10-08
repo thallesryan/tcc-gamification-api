@@ -1,5 +1,6 @@
-package io.github.thallesyan.gamification_api.infrastructure.persistence.entities;
+package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation;
 
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.RuleJPA;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,28 +17,16 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class MissionJPA extends BaseInformationJPA {
-    
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private MissionStatus status = MissionStatus.ACTIVE;
-    
+
     @Column(name = "difficulty_level")
     private Integer difficultyLevel = 1;
     
     @Column(name = "estimated_duration_hours")
     private Integer estimatedDurationHours;
     
-    @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "mission", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<GoalJPA> goals = new ArrayList<>();
     
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RuleJPA> rules = new ArrayList<>();
-    
-    public enum MissionStatus {
-        ACTIVE,
-        COMPLETED,
-        PAUSED,
-        CANCELLED,
-        EXPIRED
-    }
 }

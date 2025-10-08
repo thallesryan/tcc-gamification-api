@@ -1,4 +1,4 @@
-package io.github.thallesyan.gamification_api.infrastructure.persistence.entities;
+package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -15,13 +15,13 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "identifier")
 public abstract class BaseEntityJPA {
     
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", columnDefinition = "BINARY(16)")
-    private UUID id;
+    @Column(name = "identifier", columnDefinition = "BINARY(16)")
+    private UUID identifier;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -30,8 +30,4 @@ public abstract class BaseEntityJPA {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-    
-    @Version
-    @Column(name = "version")
-    private Long version;
 }

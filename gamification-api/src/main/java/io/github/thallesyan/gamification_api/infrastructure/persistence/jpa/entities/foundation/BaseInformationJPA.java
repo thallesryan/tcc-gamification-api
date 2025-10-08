@@ -1,14 +1,11 @@
-package io.github.thallesyan.gamification_api.infrastructure.persistence.entities;
+package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation;
 
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.enums.BaseStatusEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 
 @MappedSuperclass
@@ -23,10 +20,8 @@ public class BaseInformationJPA extends BaseEntityJPA {
     
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-    
-    @Column(name = "start_date")
-    private LocalDateTime startDate;
-    
-    @Column(name = "complete_date")
-    private LocalDateTime completeDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private BaseStatusEnum status = BaseStatusEnum.ACTIVE;
 }

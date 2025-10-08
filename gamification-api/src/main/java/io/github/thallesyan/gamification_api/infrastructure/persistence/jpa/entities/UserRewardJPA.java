@@ -1,5 +1,7 @@
-package io.github.thallesyan.gamification_api.infrastructure.persistence.entities;
+package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities;
 
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.BaseEntityJPA;
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.RewardJPA;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

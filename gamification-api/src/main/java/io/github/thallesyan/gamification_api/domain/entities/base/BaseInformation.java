@@ -1,13 +1,17 @@
 package io.github.thallesyan.gamification_api.domain.entities.base;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
+@Getter
+@Setter
 public abstract class BaseInformation {
-    private UUID identifier;
-    private String title;
-    private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime completeDate;
+    protected UUID identifier;
+    protected String title;
+    protected String description;
 }
