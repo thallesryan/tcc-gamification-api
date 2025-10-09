@@ -1,7 +1,7 @@
 package io.github.thallesyan.gamification_api.application.mappers;
 
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Mission;
-import io.github.thallesyan.gamification_api.infrastructure.web.dto.MissionRequestDTO;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.MissionCreationRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.MissionResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,7 +19,7 @@ public interface MissionMapper {
     @Mapping(target = "identifier", ignore = true)
     @Mapping(target = "title", source = "title")
     @Mapping(target = "description", source = "description")
-    Mission toMission(MissionRequestDTO missionRequestDTO);
+    Mission toMission(MissionCreationRequestDTO missionCreationRequestDTO);
 
     @Mapping(target = "goals", source = "goals")
     @Mapping(target = "identifier", source = "identifier")

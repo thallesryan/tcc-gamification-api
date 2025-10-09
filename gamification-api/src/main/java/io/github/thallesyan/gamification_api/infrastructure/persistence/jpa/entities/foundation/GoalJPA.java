@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "goals")
 @Data
@@ -17,4 +19,8 @@ public class GoalJPA extends BaseInformationJPA {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private MissionJPA mission;
+
+    public GoalJPA(UUID identifier) {
+        super(identifier);
+    }
 }
