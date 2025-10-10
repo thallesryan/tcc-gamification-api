@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users", 
@@ -17,7 +18,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class UserJPA extends BaseEntityJPA {
-    
+
+    public UserJPA(UUID identifier) {
+        super(identifier);
+    }
+
     @Column(name = "name", nullable = false, length = 255)
     private String name;
     
@@ -29,4 +34,12 @@ public class UserJPA extends BaseEntityJPA {
     
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
+
+    public static UserJPA entityByIdentifier(String identifier){
+        return new UserJPA(UUID.fromString(identifier));
+    }
+
+    public static UserJPA entityByIdentifier(UUID identifier){
+        return new UserJPA(identifier);
+    }
 }

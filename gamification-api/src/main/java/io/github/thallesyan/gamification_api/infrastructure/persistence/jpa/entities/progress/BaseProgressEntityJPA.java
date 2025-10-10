@@ -1,36 +1,38 @@
-package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation;
+package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @MappedSuperclass
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "identifier")
-public abstract class BaseEntityJPA {
-
-    protected BaseEntityJPA(UUID identifier) {
-        this.identifier = identifier;
-    }
+@EqualsAndHashCode(of = "id")
+public abstract class BaseProgressEntityJPA {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "identifier", columnDefinition = "BINARY(16)")
-    private UUID identifier;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
+    @CreationTimestamp
+    @Column(name = "start_date", nullable = false, updatable = false)
+    private LocalDateTime startDate;
+
+    @Column(name = "complete_date", nullable = true)
+    private LocalDateTime completeDate;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-    
+
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;

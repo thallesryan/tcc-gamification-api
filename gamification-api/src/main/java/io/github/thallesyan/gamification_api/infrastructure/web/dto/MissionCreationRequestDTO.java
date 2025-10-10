@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MissionRequestDTO {
+public class MissionCreationRequestDTO {
     private String title;
     private String description;
     private Integer difficultyLevel;

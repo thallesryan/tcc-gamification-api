@@ -4,8 +4,9 @@ import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
 
 import java.util.Optional;
 
-@FunctionalInterface
-public interface FindUserByEmailBoundary {
+public interface FindUserBoundary {
 
-    Optional<User> findUserByEmail(String email);
+    Optional<User> ByEmail(String email);
+
+    boolean verifyUserExistsByEmail(String email);
 }

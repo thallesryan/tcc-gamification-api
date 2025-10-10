@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.util.UUID;
+
 
 @MappedSuperclass
 @Data
@@ -14,7 +16,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class BaseInformationJPA extends BaseEntityJPA {
-    
+
+    protected BaseInformationJPA(UUID identifier) {
+        super(identifier);
+    }
+
     @Column(name = "title", nullable = false, length = 255)
     private String title;
     

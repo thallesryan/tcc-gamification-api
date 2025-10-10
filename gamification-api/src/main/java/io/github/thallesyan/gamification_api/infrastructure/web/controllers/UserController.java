@@ -28,6 +28,7 @@ public class UserController {
         return new ResponseEntity<>(userMapper.toUserResponseDTO(registeredUser), HttpStatus.CREATED);
     }
 
+    //todo: passar logica pra application do user
     @GetMapping("email/{email}")
     public ResponseEntity<UserResponseDTO> getUserByEmail(@PathVariable String email) {
         Optional<User> user = findUserByEmail.byEmail(email);
