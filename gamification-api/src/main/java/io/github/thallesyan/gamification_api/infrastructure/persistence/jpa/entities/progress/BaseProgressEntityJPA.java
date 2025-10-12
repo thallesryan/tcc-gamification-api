@@ -17,6 +17,10 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of = "id")
 public abstract class BaseProgressEntityJPA {
 
+    protected BaseProgressEntityJPA(Integer id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

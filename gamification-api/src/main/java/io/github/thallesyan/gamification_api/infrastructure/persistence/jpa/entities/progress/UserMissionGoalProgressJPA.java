@@ -15,10 +15,10 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserMissionGoalProgress extends BaseProgressEntityJPA {
+public class UserMissionGoalProgressJPA extends BaseProgressEntityJPA {
 
-    private UserMissionGoalProgress(UUID goalIdentifier) {
-        this.goal = new GoalJPA(goalIdentifier);
+    private UserMissionGoalProgressJPA(Integer id) {
+        super(id);
     }
 
     @ManyToOne
@@ -33,13 +33,20 @@ public class UserMissionGoalProgress extends BaseProgressEntityJPA {
     @Column(name = "status", nullable = false)
     private ProgressStatusEnum status = ProgressStatusEnum.ASSIGNED;
 
-    public static UserMissionGoalProgress byGoalIdentifier(String goalIdentifier) {
-        return new UserMissionGoalProgress(UUID.fromString(goalIdentifier));
+    public static UserMissionGoalProgressJPA byGoalIdentifier(String goalIdentifier) {
+        var userMissionGoal =  new UserMissionGoalProgressJPA();
+        userMissionGoal.setGoal(new GoalJPA(UUID.fromString(goalIdentifier)));
+        return userMissionGoal;
     }
 
-    public static UserMissionGoalProgress byGoalIdentifier(UUID goalIdentifier) {
-        return new UserMissionGoalProgress(goalIdentifier);
+    public static UserMissionGoalProgressJPA byGoalIdentifier(UUID goalIdentifier) {
+        var userMissionGoal =  new UserMissionGoalProgressJPA();
+        userMissionGoal.setGoal(new GoalJPA(goalIdentifier));
+        return userMissionGoal;
     }
 
+    public static UserMissionGoalProgressJPA byId(Integer id) {
+        return new UserMissionGoalProgressJPA(id);
+    }
 
 }

@@ -35,11 +35,11 @@ public class UserJPA extends BaseEntityJPA {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
-    public static UserJPA entityByIdentifier(String identifier){
+    public static UserJPA byIdentifier(String identifier){
         return new UserJPA(UUID.fromString(identifier));
     }
 
-    public static UserJPA entityByIdentifier(UUID identifier){
+    public static UserJPA byIdentifier(UUID identifier){
         return new UserJPA(identifier);
     }
 }

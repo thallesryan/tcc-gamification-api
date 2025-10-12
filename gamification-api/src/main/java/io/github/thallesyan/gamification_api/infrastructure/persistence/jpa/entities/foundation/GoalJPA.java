@@ -20,6 +20,9 @@ public class GoalJPA extends BaseInformationJPA {
     @JoinColumn(name = "mission_id")
     private MissionJPA mission;
 
+    @Column(name = "order_number", length = 255)
+    private Integer order;
+
     public GoalJPA(UUID identifier) {
         super(identifier);
     }

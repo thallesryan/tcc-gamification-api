@@ -42,4 +42,12 @@ public class MissionJPA extends BaseInformationJPA {
         missionJPA.setGoals(mission.getGoals().stream().map(Goal::getIdentifier).map(GoalJPA::new).toList());
         return missionJPA;
     }
+
+    public static MissionJPA byIdentifier(String identifier){
+        return new MissionJPA(UUID.fromString(identifier));
+    }
+
+    public static MissionJPA byIdentifier(UUID identifier){
+        return new MissionJPA(identifier);
+    }
 }
