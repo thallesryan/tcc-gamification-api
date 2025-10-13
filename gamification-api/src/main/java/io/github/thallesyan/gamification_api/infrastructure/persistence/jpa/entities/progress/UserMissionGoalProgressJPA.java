@@ -1,5 +1,6 @@
 package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress;
 
+import io.github.thallesyan.gamification_api.domain.entities.foundation.enums.ProgressStatusEnumJPA;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.GoalJPA;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,10 +29,6 @@ public class UserMissionGoalProgressJPA extends BaseProgressEntityJPA {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_mission_progress_id")
     private UserMissionProgressJPA userMissionProgress;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private ProgressStatusEnum status = ProgressStatusEnum.ASSIGNED;
 
     public static UserMissionGoalProgressJPA byGoalIdentifier(String goalIdentifier) {
         var userMissionGoal =  new UserMissionGoalProgressJPA();

@@ -5,10 +5,7 @@ import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.enti
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.MissionJPA;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.UserJPA;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class UserMissionProgressJPA extends BaseProgressEntityJPA {
 
-    private UserMissionProgressJPA(Integer id) {
+    public UserMissionProgressJPA(Integer id) {
         super(id);
     }
 

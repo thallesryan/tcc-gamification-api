@@ -1,5 +1,6 @@
 package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress;
 
+import io.github.thallesyan.gamification_api.domain.entities.foundation.enums.ProgressStatusEnumJPA;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,12 +27,15 @@ public abstract class BaseProgressEntityJPA {
     @Column(name = "id")
     private Integer id;
 
-    @CreationTimestamp
-    @Column(name = "start_date", nullable = false, updatable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private ProgressStatusEnumJPA status = ProgressStatusEnumJPA.ASSIGNED;
+
+    @Column(name = "start_date", nullable = true, updatable = false)
     private LocalDateTime startDate;
 
-    @Column(name = "complete_date", nullable = true)
-    private LocalDateTime completeDate;
+    @Column(name = "completion_date", nullable = true)
+    private LocalDateTime completionDate;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -40,4 +44,11 @@ public abstract class BaseProgressEntityJPA {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @PreUpdate
+    private void preUpdate() {
+        if(this.status == ProgressStatusEnumJPA.IN_PROGRESS){
+            this.startDate = LocalDateTime.now();
+        }
+    }
 }

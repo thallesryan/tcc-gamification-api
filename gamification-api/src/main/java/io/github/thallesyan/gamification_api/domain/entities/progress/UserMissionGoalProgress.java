@@ -6,12 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserMissionGoal {
+public class UserMissionGoalProgress {
     private Integer id;
     private Goal goal;
-    private UserMission serMissionProgress;
+//    private UserMissionProgress userMissionProgress;
     private ProgressStatusEnum status;
+    private LocalDateTime startDate;
 }

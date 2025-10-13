@@ -1,4 +1,4 @@
-package io.github.thallesyan.gamification_api.infrastructure.web.dto;
+package io.github.thallesyan.gamification_api.infrastructure.web.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

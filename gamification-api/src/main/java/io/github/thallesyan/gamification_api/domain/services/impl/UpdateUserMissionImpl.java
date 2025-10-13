@@ -1,7 +1,7 @@
 package io.github.thallesyan.gamification_api.domain.services.impl;
 
 import io.github.thallesyan.gamification_api.domain.boundary.UpdateUserMissionBoundary;
-import io.github.thallesyan.gamification_api.domain.entities.progress.UserMission;
+import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.services.UpdateUserMission;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,14 @@ public class UpdateUserMissionImpl implements UpdateUserMission {
     }
 
     @Override
-    public UserMission startMission(UserMission userMission) {
-        var goalOne = userMission.getGoalByOrder(1);
-        //goalOne.setStatus(ProgressStatusEnum.IN_PROGRESS);
-        //var userGoalUpdated = userMissionBoundary.updateGoalStatus(goalOne, ProgressStatusEnum.IN_PROGRESS);
-        userMissionBoundary.updateMissionStatus(userMission, ProgressStatusEnum.IN_PROGRESS);
+    public UserMissionProgress startMission(UserMissionProgress userMissionProgress) {
+        var goalOne = userMissionProgress.getGoalProgressByOrder(1);
 
-        return null;
+        var userGoalUpdated = userMissionBoundary.updateGoalStatus(goalOne, ProgressStatusEnum.IN_PROGRESS);
+        var userMissionUpdated = userMissionBoundary.updateMissionStatus(userMissionProgress, ProgressStatusEnum.IN_PROGRESS);
+
+        userMissionUpdated.setGoalProgressByOrder(userGoalUpdated, 1);
+
+        return userMissionUpdated;
     }
 }

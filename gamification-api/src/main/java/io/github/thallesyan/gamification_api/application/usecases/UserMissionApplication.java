@@ -1,6 +1,7 @@
 package io.github.thallesyan.gamification_api.application.usecases;
 
 import io.github.thallesyan.gamification_api.application.exceptions.UserNotFoundException;
+import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.services.*;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import org.springframework.stereotype.Component;
@@ -45,11 +46,8 @@ public class UserMissionApplication {
 
     }
 
-    public void startMissionByUserIdentifier(String userIdentifier,  String missionId) {
+    public UserMissionProgress startMissionByUserIdentifier(String userIdentifier, String missionId) {
         var userMission = findUserMission.byMissionIdAndStatus(userIdentifier, missionId, ProgressStatusEnum.ASSIGNED);
-        updateUserMission.startMission(userMission);
-
-        //todo update user goal to in progress
-        //todo update user mission to in progress
+        return updateUserMission.startMission(userMission);
     }
 }

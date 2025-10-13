@@ -4,7 +4,7 @@ import io.github.thallesyan.gamification_api.application.exceptions.UserMissionN
 import io.github.thallesyan.gamification_api.domain.boundary.FindUserMissionBoundary;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Mission;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
-import io.github.thallesyan.gamification_api.domain.entities.progress.UserMission;
+import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.services.FindUserMission;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class FindUserMissionByUserIdentifierImpl implements FindUserMission {
     }
 
     @Override
-    public UserMission byMissionIdAndStatus(String userIdentifier, String missionIdentifier, ProgressStatusEnum progressStatusEnum) {
+    public UserMissionProgress byMissionIdAndStatus(String userIdentifier, String missionIdentifier, ProgressStatusEnum progressStatusEnum) {
         //todo mudar exececao/adaptar
         return boundary
                 .byUserAndMissionAndStatus(User.byIdentifier(userIdentifier), Mission.byIdentifier(missionIdentifier), progressStatusEnum)

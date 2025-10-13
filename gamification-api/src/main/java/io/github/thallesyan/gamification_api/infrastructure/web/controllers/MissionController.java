@@ -1,9 +1,13 @@
 package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 
-import io.github.thallesyan.gamification_api.application.mappers.MissionMapper;
+import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.MissionResponseDTO;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.MissionStartResponseDTO;
+import io.github.thallesyan.gamification_api.infrastructure.web.mappers.MissionMapper;
 import io.github.thallesyan.gamification_api.application.usecases.MissionApplication;
 import io.github.thallesyan.gamification_api.application.usecases.UserMissionApplication;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.*;
+import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserMissionMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +25,7 @@ public class MissionController {
     private final MissionApplication missionApplication;
     private final UserMissionApplication userMissionApplication;
     private final MissionMapper missionMapper;
+    private final UserMissionMapper userMissionMapper;
 
     @PostMapping("create")
     public ResponseEntity<MissionResponseDTO> createMission(@RequestBody MissionCreationRequestDTO missionCreationRequestDTO) {
@@ -43,12 +48,13 @@ public class MissionController {
     //todo validate mission already started and return 422?
     //todo return 422 if the mission was not associated with the user... use bind-missions
     @PostMapping("user/start-mission")
-    public ResponseEntity<MissionResponseDTO> start(@RequestBody StartMissionRequestDTO startMissionRequestDTO) {
-        switch (startMissionRequestDTO.getUserIdentification().getUserIdentifierType()){
+    public ResponseEntity<MissionStartResponseDTO> start(@RequestBody StartMissionRequestDTO startMissionRequestDTO) {
+        var userMission = switch (startMissionRequestDTO.getUserIdentification().getUserIdentifierType()){
+            case EMAIL -> new UserMissionProgress();
             case IDENTIFIER -> userMissionApplication.startMissionByUserIdentifier(startMissionRequestDTO.getUserIdentification().getUserIdentifierValue(), startMissionRequestDTO.getMissionIdentifier());
-        }
+        };
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(userMissionMapper.toStartMissionResponseDTO(userMission), HttpStatus.CREATED);
     }
 
     //todo resolve goal, modify return if all goals are finished

@@ -1,7 +1,7 @@
 package io.github.thallesyan.gamification_api.domain.services;
 
-import io.github.thallesyan.gamification_api.domain.entities.progress.UserMission;
+import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 
 public interface UpdateUserMission {
-    UserMission startMission(UserMission userMission);
+    UserMissionProgress startMission(UserMissionProgress userMissionProgress);
 }

@@ -2,14 +2,14 @@ package io.github.thallesyan.gamification_api.infrastructure.persistence.reposit
 
 import io.github.thallesyan.gamification_api.domain.boundary.UpdateUserMissionBoundary;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.enums.ProgressStatusEnumJPA;
-import io.github.thallesyan.gamification_api.domain.entities.progress.UserMission;
-import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionGoal;
+import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
+import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionGoalProgress;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.UserMissionGoalProgressPersistence;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.UserMissionProgressPersistence;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
-import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.UserMissionProgressJPA;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class UpdateUserMissionDb implements UpdateUserMissionBoundary {
@@ -23,14 +23,20 @@ public class UpdateUserMissionDb implements UpdateUserMissionBoundary {
     }
 
     @Override
-    public UserMission updateMissionStatus(UserMission userMission, ProgressStatusEnum progressStatusEnum) {
-        var userMissionUpdated = userMissionProgressPersistence.updateStatus(userMission.getId(), ProgressStatusEnumJPA.getProgressJPAByProgressStatusEnum(progressStatusEnum));
-        System.out.println(userMissionUpdated);
-        return null;
+    public UserMissionProgress updateMissionStatus(UserMissionProgress userMissionProgress, ProgressStatusEnum progressStatusEnum) {
+        userMissionProgressPersistence.startUserMission(userMissionProgress.getId(), ProgressStatusEnumJPA.getProgressJPAByProgressStatusEnum(progressStatusEnum));
+
+        userMissionProgress.setStatus(progressStatusEnum);
+        userMissionProgress.setStartDate(LocalDateTime.now());
+
+        return userMissionProgress;
     }
 
     @Override
-    public UserMissionGoal updateGoalStatus(UserMissionGoal userMissionGoal, ProgressStatusEnum progressStatusEnum) {
-        return null;
+    public UserMissionGoalProgress updateGoalStatus(UserMissionGoalProgress userMissionGoalProgress, ProgressStatusEnum progressStatusEnum) {
+        userMissionGoalProgressPersistence.startUserMissionGoal(userMissionGoalProgress.getId(), ProgressStatusEnumJPA.getProgressJPAByProgressStatusEnum(progressStatusEnum));
+        userMissionGoalProgress.setStatus(progressStatusEnum);
+        userMissionGoalProgress.setStartDate(LocalDateTime.now());
+        return userMissionGoalProgress;
     }
 }

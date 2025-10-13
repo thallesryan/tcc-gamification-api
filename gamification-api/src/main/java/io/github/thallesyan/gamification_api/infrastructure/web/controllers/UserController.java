@@ -1,11 +1,11 @@
 package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 
-import io.github.thallesyan.gamification_api.application.mappers.UserMapper;
+import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserMapper;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
 import io.github.thallesyan.gamification_api.domain.services.FindUserByEmail;
 import io.github.thallesyan.gamification_api.domain.services.RegisterUser;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.UserRequestDTO;
-import io.github.thallesyan.gamification_api.infrastructure.web.dto.UserResponseDTO;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
