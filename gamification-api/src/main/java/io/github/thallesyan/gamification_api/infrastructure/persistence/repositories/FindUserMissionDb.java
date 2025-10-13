@@ -2,11 +2,11 @@ package io.github.thallesyan.gamification_api.infrastructure.persistence.reposit
 
 import io.github.thallesyan.gamification_api.domain.boundary.FindUserMissionBoundary;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Mission;
-import io.github.thallesyan.gamification_api.domain.entities.foundation.enums.ProgressStatusEnumJPA;
+import io.github.thallesyan.gamification_api.domain.entities.progress.enums.ProgressStatusEnumJPA;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.UserMissionProgressPersistence;
-import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.UserJPA;
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.UserJPA;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.MissionJPA;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.mappers.UserMissionPersistenceMapper;

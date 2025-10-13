@@ -1,7 +1,7 @@
 package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa;
 
-import io.github.thallesyan.gamification_api.domain.entities.foundation.enums.ProgressStatusEnumJPA;
-import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.UserJPA;
+import io.github.thallesyan.gamification_api.domain.entities.progress.enums.ProgressStatusEnumJPA;
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.UserJPA;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.MissionJPA;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.UserMissionProgressJPA;
 import jakarta.transaction.Transactional;

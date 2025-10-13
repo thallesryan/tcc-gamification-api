@@ -15,6 +15,7 @@ public class User {
     private String name;
     private String email;
     private Date dateOfBirth;
+    private Platform platform;
 
     private User(UUID identifier) {
         this.identifier = identifier;

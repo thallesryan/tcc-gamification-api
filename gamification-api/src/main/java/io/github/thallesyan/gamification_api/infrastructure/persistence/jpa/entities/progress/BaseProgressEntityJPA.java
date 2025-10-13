@@ -1,6 +1,6 @@
 package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress;
 
-import io.github.thallesyan.gamification_api.domain.entities.foundation.enums.ProgressStatusEnumJPA;
+import io.github.thallesyan.gamification_api.domain.entities.progress.enums.ProgressStatusEnumJPA;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

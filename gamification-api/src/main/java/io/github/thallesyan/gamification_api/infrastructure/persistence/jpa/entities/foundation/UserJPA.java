@@ -1,6 +1,5 @@
-package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities;
+package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation;
 
-import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.BaseEntityJPA;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users", 
-       uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+       uniqueConstraints = {@UniqueConstraint(columnNames = { "platform_id", "email" }) })
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,7 +25,7 @@ public class UserJPA extends BaseEntityJPA {
     @Column(name = "name", nullable = false, length = 255)
     private String name;
     
-    @Column(name = "email", nullable = false, length = 255, unique = true)
+    @Column(name = "email", nullable = false, length = 255)
     private String email;
     
     @Column(name = "date_of_birth")
@@ -34,6 +33,10 @@ public class UserJPA extends BaseEntityJPA {
     
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "platform_id")
+    private PlatformJPA platform;
 
     public static UserJPA byIdentifier(String identifier){
         return new UserJPA(UUID.fromString(identifier));

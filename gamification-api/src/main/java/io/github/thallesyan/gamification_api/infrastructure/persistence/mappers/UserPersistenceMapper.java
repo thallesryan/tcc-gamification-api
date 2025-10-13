@@ -1,7 +1,7 @@
 package io.github.thallesyan.gamification_api.infrastructure.persistence.mappers;
 
 import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
-import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.UserJPA;
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.UserJPA;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

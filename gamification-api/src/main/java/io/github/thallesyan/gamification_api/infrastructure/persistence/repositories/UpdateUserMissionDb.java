@@ -1,7 +1,7 @@
 package io.github.thallesyan.gamification_api.infrastructure.persistence.repositories;
 
 import io.github.thallesyan.gamification_api.domain.boundary.UpdateUserMissionBoundary;
-import io.github.thallesyan.gamification_api.domain.entities.foundation.enums.ProgressStatusEnumJPA;
+import io.github.thallesyan.gamification_api.domain.entities.progress.enums.ProgressStatusEnumJPA;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionGoalProgress;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.UserMissionGoalProgressPersistence;

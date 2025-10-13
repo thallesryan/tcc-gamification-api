@@ -1,6 +1,6 @@
 package io.github.thallesyan.gamification_api.domain.entities.foundation;
 
-import io.github.thallesyan.gamification_api.domain.entities.base.BaseInformation;
+import io.github.thallesyan.gamification_api.domain.entities.foundation.base.BaseInformation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

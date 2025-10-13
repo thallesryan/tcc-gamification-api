@@ -1,4 +1,4 @@
-package io.github.thallesyan.gamification_api.domain.entities.base;
+package io.github.thallesyan.gamification_api.domain.entities.foundation.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

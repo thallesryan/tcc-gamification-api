@@ -4,7 +4,7 @@ import io.github.thallesyan.gamification_api.domain.boundary.CreateUserMissionBo
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Mission;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.UserMissionProgressPersistence;
-import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.UserJPA;
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.UserJPA;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.MissionJPA;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.UserMissionProgressJPA;
 import org.springframework.stereotype.Service;

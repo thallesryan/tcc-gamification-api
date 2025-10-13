@@ -1,18 +1,23 @@
 package io.github.thallesyan.gamification_api.domain.entities.foundation;
 
-import io.github.thallesyan.gamification_api.domain.entities.base.BaseInformation;
+import io.github.thallesyan.gamification_api.domain.entities.foundation.base.BaseInformation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Mission extends BaseInformation {
+    private Integer estimatedDurationHours;
     private List<Goal> goals;
+    private List<Rule> rules;
+    private Reward reward;
 
     public Mission(String title, String description, List<Goal> goals) {
         super();

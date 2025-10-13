@@ -1,4 +1,4 @@
-package io.github.thallesyan.gamification_api.domain.entities.foundation.enums;
+package io.github.thallesyan.gamification_api.domain.entities.progress.enums;
 
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import lombok.Getter;

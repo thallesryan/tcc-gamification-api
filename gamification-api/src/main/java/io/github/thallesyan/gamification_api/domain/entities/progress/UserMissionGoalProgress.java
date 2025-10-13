@@ -1,20 +1,17 @@
 package io.github.thallesyan.gamification_api.domain.entities.progress;
 
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Goal;
-import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserMissionGoalProgress {
-    private Integer id;
+public class UserMissionGoalProgress extends BaseProgress{
     private Goal goal;
-//    private UserMissionProgress userMissionProgress;
-    private ProgressStatusEnum status;
-    private LocalDateTime startDate;
 }
