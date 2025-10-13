@@ -1,8 +1,8 @@
-package io.github.thallesyan.gamification_api.application.mappers;
+package io.github.thallesyan.gamification_api.infrastructure.web.mappers;
 
 import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.UserRequestDTO;
-import io.github.thallesyan.gamification_api.infrastructure.web.dto.UserResponseDTO;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.UserResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

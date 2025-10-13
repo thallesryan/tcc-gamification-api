@@ -20,4 +20,16 @@ public class Mission extends BaseInformation {
         this.description = description;
         this.goals = goals;
     }
+
+    public Mission(UUID identifier) {
+        super(identifier);
+    }
+
+    public static Mission byIdentifier(String identifier) {
+        return new Mission(UUID.fromString(identifier));
+    }
+
+    public static Mission byIdentifier(UUID identifier) {
+        return new Mission(identifier);
+    }
 }

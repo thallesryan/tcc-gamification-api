@@ -18,4 +18,8 @@ public abstract class BaseInformation {
     protected UUID identifier;
     protected String title;
     protected String description;
+
+    protected BaseInformation(UUID identifier) {
+        this.identifier = identifier;
+    }
 }

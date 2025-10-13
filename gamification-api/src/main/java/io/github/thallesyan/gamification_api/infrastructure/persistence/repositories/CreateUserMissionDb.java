@@ -23,7 +23,7 @@ public class CreateUserMissionDb implements CreateUserMissionBoundary {
     //todo criar entidade de retorno do salvamento do do usuario e missoes
     @Override
     public void createUserMissionProgress(User user, List<Mission> missions) {
-        var userJPA = UserJPA.entityByIdentifier(user.getIdentifier());
+        var userJPA = UserJPA.byIdentifier(user.getIdentifier());
         var userMissions = missions
                 .stream()
                 .map(MissionJPA::byMissionAndGoalsIdentifier)

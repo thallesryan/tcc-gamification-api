@@ -15,4 +15,16 @@ public class User {
     private String name;
     private String email;
     private Date dateOfBirth;
+
+    private User(UUID identifier) {
+        this.identifier = identifier;
+    }
+
+    public static User byIdentifier(String identifier) {
+        return new User(UUID.fromString(identifier));
+    }
+
+    public static User byIdentifier(UUID identifier) {
+        return new User(identifier);
+    }
 }

@@ -4,14 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GoalDTO {
-    private UUID identifier;
-    private String title;
-    private String description;
-    private Integer order;
+public class StartMissionRequestDTO {
+    private UserIdentificationDTO userIdentification;
+    private String missionIdentifier;
 }
