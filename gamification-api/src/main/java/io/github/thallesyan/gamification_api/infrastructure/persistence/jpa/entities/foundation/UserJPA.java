@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users", 
-       uniqueConstraints = {@UniqueConstraint(columnNames = { "platform_id", "email" }) })
+       uniqueConstraints = {@UniqueConstraint(columnNames = { "platform_id", "email" })})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
