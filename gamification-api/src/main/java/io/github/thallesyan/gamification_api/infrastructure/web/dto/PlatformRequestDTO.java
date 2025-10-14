@@ -1,14 +1,12 @@
-package io.github.thallesyan.gamification_api.domain.entities.foundation;
+package io.github.thallesyan.gamification_api.infrastructure.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Platform {
+@Data
+public class PlatformRequestDTO {
     private String name;
 }

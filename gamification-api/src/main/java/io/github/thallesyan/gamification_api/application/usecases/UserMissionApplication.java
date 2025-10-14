@@ -4,6 +4,7 @@ import io.github.thallesyan.gamification_api.application.exceptions.UserNotFound
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.services.*;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,14 +16,16 @@ public class UserMissionApplication {
     private final FindMission findMission;
     private final FindUserByEmail findUserByEmail;
     private final BindUserMissions bindUserMissions;
-    private final FindUserMission findUserMission;
+    private final FindUserMission findUserMissionByIdentifier;
+    private final FindUserMission findUserMissionByEmail;
     private final UpdateUserMission updateUserMission;
 
-    public UserMissionApplication(FindMission findMission, FindUserByEmail findUserByEmail, BindUserMissions bindUserMissions, FindUserMission findUserMission, UpdateUserMission updateUserMission) {
+    public UserMissionApplication(FindMission findMission, FindUserByEmail findUserByEmail, BindUserMissions bindUserMissions, @Qualifier("findUserMissionByUserIdentifierImpl") FindUserMission findUserMissionByIdentifier, @Qualifier("findUserMissionByUserEmailImpl") FindUserMission findUserMissionByEmail, UpdateUserMission updateUserMission) {
         this.findMission = findMission;
         this.findUserByEmail = findUserByEmail;
         this.bindUserMissions = bindUserMissions;
-        this.findUserMission = findUserMission;
+        this.findUserMissionByIdentifier = findUserMissionByIdentifier;
+        this.findUserMissionByEmail = findUserMissionByEmail;
         this.updateUserMission = updateUserMission;
     }
 
@@ -42,12 +45,13 @@ public class UserMissionApplication {
     // todo get user missions actived, in progress etc
 
 
-    public void startMissionByUserEmail(String userEmail, String missionId) {
-
+    public UserMissionProgress startMissionByUserEmail(String userEmail, String missionId) {
+        var userMission = findUserMissionByEmail.byMissionIdAndStatus(userEmail, missionId, ProgressStatusEnum.ASSIGNED);
+        return updateUserMission.startMission(userMission);
     }
 
     public UserMissionProgress startMissionByUserIdentifier(String userIdentifier, String missionId) {
-        var userMission = findUserMission.byMissionIdAndStatus(userIdentifier, missionId, ProgressStatusEnum.ASSIGNED);
+        var userMission = findUserMissionByIdentifier.byMissionIdAndStatus(userIdentifier, missionId, ProgressStatusEnum.ASSIGNED);
         return updateUserMission.startMission(userMission);
     }
 }

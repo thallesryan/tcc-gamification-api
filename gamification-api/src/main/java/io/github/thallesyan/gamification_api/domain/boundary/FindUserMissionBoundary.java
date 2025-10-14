@@ -8,5 +8,6 @@ import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.enti
 import java.util.Optional;
 
 public interface FindUserMissionBoundary {
-    Optional<UserMissionProgress> byUserAndMissionAndStatus(User user, Mission mission, ProgressStatusEnum progressStatusEnum);
+    Optional<UserMissionProgress> byUserIdentifierAndMissionAndStatus(User user, Mission mission, ProgressStatusEnum progressStatusEnum);
+
 }

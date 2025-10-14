@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users", 
-       uniqueConstraints = {@UniqueConstraint(columnNames = { "platform_id", "email" })})
+       uniqueConstraints = {@UniqueConstraint(columnNames = { "platform_name", "email" })})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,8 +34,8 @@ public class UserJPA extends BaseEntityJPA {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "platform_id")
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "platform_name")
     private PlatformJPA platform;
 
     public static UserJPA byIdentifier(String identifier){

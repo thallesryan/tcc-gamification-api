@@ -13,7 +13,7 @@ import java.util.Date;
 public class UserRequestDTO {
     private String name;
     private String email;
-    
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dateOfBirth;
+    private PlatformRequestDTO platform;
 }

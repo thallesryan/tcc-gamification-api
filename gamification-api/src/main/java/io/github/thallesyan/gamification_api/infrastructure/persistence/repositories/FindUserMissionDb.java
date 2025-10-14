@@ -26,14 +26,13 @@ public class FindUserMissionDb implements FindUserMissionBoundary {
     }
 
     @Override
-    public Optional<UserMissionProgress> byUserAndMissionAndStatus(User user, Mission mission, ProgressStatusEnum progressStatusEnum) {
+    public Optional<UserMissionProgress> byUserIdentifierAndMissionAndStatus(User user, Mission mission, ProgressStatusEnum progressStatusEnum) {
         var userJPA = UserJPA.byIdentifier(user.getIdentifier());
         var missionJPA = MissionJPA.byIdentifier(mission.getIdentifier());
         return userMissionProgressPersistence
                 .findByUserAndMissionAndStatus(userJPA, missionJPA, ProgressStatusEnumJPA.getProgressJPAByProgressStatusEnum(progressStatusEnum))
                 .map(userMissionPersistenceMapper::JpaEntityToModel)
-                .or(Optional::empty)
-                ;
+                .or(Optional::empty);
     }
 
 }

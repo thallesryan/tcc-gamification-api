@@ -6,7 +6,7 @@ import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.Use
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {PlatformMapper.class})
 public interface UserMapper {
 
     @Mapping(target = "identifier", ignore = true)
@@ -19,11 +19,6 @@ public interface UserMapper {
     @Mapping(target = "name", source = "name")
     @Mapping(target = "email", source = "email")
     @Mapping(target = "dateOfBirth", source = "dateOfBirth")
-    User toUser(UserResponseDTO userResponseDTO);
-
-    @Mapping(target = "identifier", source = "identifier")
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "email", source = "email")
-    @Mapping(target = "dateOfBirth", source = "dateOfBirth")
+    @Mapping(target = "platform", source = "platform.name")
     UserResponseDTO toUserResponseDTO(User user);
 }

@@ -1,6 +1,7 @@
 package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class PlatformJPA extends BaseEntityJPA{
+@EqualsAndHashCode()
+public class PlatformJPA{
+    @Id
     private String name;
 }

@@ -50,7 +50,7 @@ public class MissionController {
     @PostMapping("user/start-mission")
     public ResponseEntity<MissionStartResponseDTO> start(@RequestBody StartMissionRequestDTO startMissionRequestDTO) {
         var userMission = switch (startMissionRequestDTO.getUserIdentification().getUserIdentifierType()){
-            case EMAIL -> new UserMissionProgress();
+            case EMAIL -> userMissionApplication.startMissionByUserEmail(startMissionRequestDTO.getUserIdentification().getUserIdentifierValue(), startMissionRequestDTO.getMissionIdentifier());
             case IDENTIFIER -> userMissionApplication.startMissionByUserIdentifier(startMissionRequestDTO.getUserIdentification().getUserIdentifierValue(), startMissionRequestDTO.getMissionIdentifier());
         };
 

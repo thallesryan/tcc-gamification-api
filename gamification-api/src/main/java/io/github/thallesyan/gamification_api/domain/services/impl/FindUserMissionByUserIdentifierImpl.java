@@ -7,9 +7,11 @@ import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.services.FindUserMission;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
+@Qualifier("findUserMissionByUserIdentifierImpl")
 public class FindUserMissionByUserIdentifierImpl implements FindUserMission {
 
     private final FindUserMissionBoundary boundary;
@@ -22,7 +24,7 @@ public class FindUserMissionByUserIdentifierImpl implements FindUserMission {
     public UserMissionProgress byMissionIdAndStatus(String userIdentifier, String missionIdentifier, ProgressStatusEnum progressStatusEnum) {
         //todo mudar exececao/adaptar
         return boundary
-                .byUserAndMissionAndStatus(User.byIdentifier(userIdentifier), Mission.byIdentifier(missionIdentifier), progressStatusEnum)
+                .byUserIdentifierAndMissionAndStatus(User.byIdentifier(userIdentifier), Mission.byIdentifier(missionIdentifier), progressStatusEnum)
                 .orElseThrow(() -> UserMissionNotFound.missionToStartNotFound(userIdentifier, missionIdentifier));
     }
 

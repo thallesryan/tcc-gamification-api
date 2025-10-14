@@ -15,7 +15,7 @@ public class UserResponseDTO {
     private UUID identifier;
     private String name;
     private String email;
-    
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dateOfBirth;
+    private String platform;
 }
