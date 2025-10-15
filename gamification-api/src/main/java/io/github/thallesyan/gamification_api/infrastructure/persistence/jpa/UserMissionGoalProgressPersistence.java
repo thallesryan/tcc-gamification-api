@@ -15,4 +15,9 @@ public interface UserMissionGoalProgressPersistence extends JpaRepository<UserMi
     @Modifying
     @Query("update UserMissionGoalProgressJPA m set m.status = :progressStatusEnum, m.startDate = now() where m.id = :userMissionGoalId")
     Integer startUserMissionGoal(Integer userMissionGoalId, ProgressStatusEnumJPA progressStatusEnum);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("update UserMissionGoalProgressJPA m set m.status = :progressStatusEnum, m.completionDate = now() where m.id = :userMissionGoalId")
+    Integer completeMissionGoal(Integer userMissionGoalId, ProgressStatusEnumJPA progressStatusEnum);
 }

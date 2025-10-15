@@ -20,21 +20,23 @@ public class UserMissionApplication {
     private final BindUserMissions bindUserMissions;
     private final FindUserMission findUserMissionByIdentifier;
     private final FindUserMission findUserMissionByEmail;
+    private final FindUserMissionById findUserMissionById;
     private final UpdateUserMission updateUserMission;
     private final FindUserProgressMissionsByStatusAndPlatform findUserProgressMissionsByStatusAndPlatform;
 
-    public UserMissionApplication(FindMission findMission, FindUserByEmail findUserByEmail, BindUserMissions bindUserMissions, @Qualifier("findUserMissionByUserIdentifierImpl") FindUserMission findUserMissionByIdentifier, @Qualifier("findUserMissionByUserEmailImpl") FindUserMission findUserMissionByEmail, UpdateUserMission updateUserMission, FindUserProgressMissionsByStatusAndPlatform findUserProgressMissionsByStatusAndPlatform) {
+    public UserMissionApplication(FindMission findMission, FindUserByEmail findUserByEmail, BindUserMissions bindUserMissions, @Qualifier("findUserMissionByUserIdentifierImpl") FindUserMission findUserMissionByIdentifier, @Qualifier("findUserMissionByUserEmailImpl") FindUserMission findUserMissionByEmail, FindUserMissionById findUserMissionById, UpdateUserMission updateUserMission, FindUserProgressMissionsByStatusAndPlatform findUserProgressMissionsByStatusAndPlatform) {
         this.findMission = findMission;
         this.findUserByEmail = findUserByEmail;
         this.bindUserMissions = bindUserMissions;
         this.findUserMissionByIdentifier = findUserMissionByIdentifier;
         this.findUserMissionByEmail = findUserMissionByEmail;
+        this.findUserMissionById = findUserMissionById;
         this.updateUserMission = updateUserMission;
         this.findUserProgressMissionsByStatusAndPlatform = findUserProgressMissionsByStatusAndPlatform;
     }
 
     //todo Criar retornos diferentes para caso todas missoes tenham sido associadas e quando so algumas estivetem. Ex em casos de missoes nao encontradas pelos ids
-    //todo criar handler para excecoes
+    //todo criar handler para excecoes, quando n achar missionId etc
     public void associateUserMission(String userEmail, List<UUID> missionsIds) {
         var userOpt = findUserByEmail.byEmail(userEmail);
         if(userOpt.isEmpty()){
@@ -74,5 +76,28 @@ public class UserMissionApplication {
     public Optional<UserMissionGoalProgress> getLastGoal(String userEmail, String platformName, String missionId){
         var userMission = findUserMissionByEmail.byMissionIdAndStatus(userEmail, missionId, ProgressStatusEnum.IN_PROGRESS);
         return userMission.getLastGoal();
+    }
+
+    public UserMissionProgress resolveGoalInProgress(String userEmail, String platformName, String missionId){
+        var userMission = findUserMissionByEmail
+                .byMissionIdAndStatus(userEmail, missionId, ProgressStatusEnum.IN_PROGRESS);
+
+        var currentGoal = userMission
+                .getCurrentGoal()
+                .orElseThrow(() -> new RuntimeException("Current goal not found"));
+
+        var nextGoal = userMission
+                .getNextGoal();
+
+        var updatedMission = updateUserMission.completeGoal(userMission, currentGoal);
+
+        nextGoal.ifPresentOrElse(
+                next -> updateUserMission.startGoal(updatedMission, next),
+                () -> {
+                    updateUserMission.completeMission(updatedMission);
+                }
+        );
+
+        return findUserMissionById.byId(userMission.getId());
     }
 }

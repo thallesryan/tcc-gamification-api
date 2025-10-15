@@ -5,6 +5,7 @@ import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.enti
 
 import java.util.List;
 
+@FunctionalInterface
 public interface FindUserMission {
     UserMissionProgress byMissionIdAndStatus(String userIdentifier, String missionIdentifier, ProgressStatusEnum progressStatusEnum);
 }

@@ -24,4 +24,10 @@ public interface UserMissionProgressPersistence extends JpaRepository<UserMissio
     Integer startUserMission(Integer userMissionId, ProgressStatusEnumJPA progressStatusEnum);
 
     List<UserMissionProgressJPA> findUserMissionProgressJPAByUserAndStatus(UserJPA user, ProgressStatusEnumJPA progressStatusEnum);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("update UserMissionProgressJPA m set m.status = :progressStatusEnum, m.completionDate = now() where m.id = :userMissionId")
+    Integer completeMission(Integer userMissionId, ProgressStatusEnumJPA progressStatusEnum);
+
 }

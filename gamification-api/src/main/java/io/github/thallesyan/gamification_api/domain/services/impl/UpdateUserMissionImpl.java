@@ -1,6 +1,7 @@
 package io.github.thallesyan.gamification_api.domain.services.impl;
 
 import io.github.thallesyan.gamification_api.domain.boundary.UpdateUserMissionBoundary;
+import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionGoalProgress;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.services.UpdateUserMission;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
@@ -24,5 +25,24 @@ public class UpdateUserMissionImpl implements UpdateUserMission {
         userMissionUpdated.setGoalProgressByOrder(userGoalUpdated, 1);
 
         return userMissionUpdated;
+    }
+
+    @Override
+    public UserMissionProgress startGoal(UserMissionProgress userMissionProgress, UserMissionGoalProgress userMissionGoalProgress) {
+        var userGoalUpdated = userMissionBoundary.updateGoalStatus(userMissionGoalProgress, ProgressStatusEnum.IN_PROGRESS);
+        userMissionProgress.setGoalProgressByOrder(userGoalUpdated, userMissionGoalProgress.getGoal().getOrder());
+        return userMissionProgress;
+    }
+
+    @Override
+    public UserMissionProgress completeGoal(UserMissionProgress userMissionProgress, UserMissionGoalProgress userMissionGoalProgress) {
+        var userGoalCompleted = userMissionBoundary.completeGoal(userMissionGoalProgress);
+        userMissionProgress.setGoalProgressByOrder(userGoalCompleted, userMissionGoalProgress.getGoal().getOrder());
+        return userMissionProgress;
+    }
+
+    @Override
+    public UserMissionProgress completeMission(UserMissionProgress userMissionProgress) {
+        return userMissionBoundary.completeMission(userMissionProgress);
     }
 }

@@ -5,6 +5,9 @@ import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissio
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 
 public interface UpdateUserMissionBoundary {
-    UserMissionProgress updateMissionStatus(UserMissionProgress userMissionProgressGoal, ProgressStatusEnum progressStatusEnum);
+    UserMissionProgress updateMissionStatus(UserMissionProgress userMissionProgress, ProgressStatusEnum progressStatusEnum);
+    UserMissionProgress completeMission(UserMissionProgress userMissionProgress);
     UserMissionGoalProgress updateGoalStatus(UserMissionGoalProgress userMissionGoalProgress, ProgressStatusEnum progressStatusEnum);
+    UserMissionGoalProgress completeGoal(UserMissionGoalProgress userMissionGoalProgress);
+
 }

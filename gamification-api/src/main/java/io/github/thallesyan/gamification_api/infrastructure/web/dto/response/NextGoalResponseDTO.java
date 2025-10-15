@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class NextGoalResponseDTO {
-    UserGoalProgressResponseDTO currentGoal;
+    UserGoalProgressResponseDTO inProgressGoal;
     UserGoalProgressResponseDTO nextGoal;
     UserGoalProgressResponseDTO lastGoal;
 }

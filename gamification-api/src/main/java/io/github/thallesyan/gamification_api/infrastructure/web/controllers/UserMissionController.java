@@ -1,8 +1,10 @@
 package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 
+import io.github.thallesyan.gamification_api.application.exceptions.UserMissionNotFound;
 import io.github.thallesyan.gamification_api.application.usecases.UserMissionApplication;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.BindUserMissionRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.MissionBinding;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.ResolveGoalRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.StartMissionRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.MissionProgressResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.MissionResponseDTO;
@@ -56,18 +58,43 @@ public class UserMissionController {
     //todo resolve goal, modify return if all goals are finished
     //todo: return actual goal and next goal
     @GetMapping("mission/{missionId}/user/{userEmail}/next-goal")
-    public ResponseEntity<NextGoalResponseDTO> resolveGoal(
+    public ResponseEntity<NextGoalResponseDTO> getGoal(
             @PathVariable("missionId") String missionId,
             @PathVariable("userEmail") String userEmail,
             @RequestHeader("platform") String platform
     ) {
-        var currentGoal = userMissionApplication.getCurrentGoal(userEmail, platform, missionId);
-        var nextGoal = userMissionApplication.getNextGoal(userEmail, platform, missionId);
-        var lastGoal = userMissionApplication.getLastGoal(userEmail, platform, missionId);
+        try{
+            var currentGoal = userMissionApplication
+                    .getCurrentGoal(userEmail, platform, missionId)
+                    .orElse(null);
 
+            var nextGoal = userMissionApplication
+                    .getNextGoal(userEmail, platform, missionId)
+                    .orElse(null);;
 
-        var nextGoalResponse = new NextGoalResponseDTO(userMissionGoalMapper.userGoalToUserGoalProgress(currentGoal.get()), userMissionGoalMapper.userGoalToUserGoalProgress(nextGoal.get()), userMissionGoalMapper.userGoalToUserGoalProgress(lastGoal.get()));
-        return ResponseEntity.ok(nextGoalResponse);
+            var lastGoal = userMissionApplication
+                    .getLastGoal(userEmail, platform, missionId)
+                    .orElse(null);;
+
+            var nextGoalResponse = new NextGoalResponseDTO(userMissionGoalMapper.userGoalToUserGoalProgress(currentGoal), userMissionGoalMapper.userGoalToUserGoalProgress(nextGoal), userMissionGoalMapper.userGoalToUserGoalProgress(lastGoal));
+            return ResponseEntity.ok(nextGoalResponse);
+        }catch (UserMissionNotFound ex){
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    @PostMapping("mission/{missionId}/user/{userEmail}/resolve-next-goal")
+    public ResponseEntity<MissionStartResponseDTO> resolveGoal(
+            @PathVariable("missionId") String missionId,
+            @PathVariable("userEmail") String userEmail,
+            @RequestHeader("platform") String platform
+    ) {
+        try{
+            var userMission = userMissionApplication.resolveGoalInProgress(userEmail, platform, missionId);
+            return new ResponseEntity<>(userMissionMapper.toStartMissionResponseDTO(userMission), HttpStatus.OK);
+        }catch (UserMissionNotFound ex){
+            return new  ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
     @GetMapping("{userEmail}/status/{missionStatus}")

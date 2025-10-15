@@ -45,4 +45,12 @@ public class FindUserMissionDb implements FindUserMissionBoundary {
                 .map(userMissionPersistenceMapper::JpaEntityToModel).toList();
     }
 
+    @Override
+    public Optional<UserMissionProgress> byId(Integer id) {
+        return userMissionProgressPersistence
+                .findById(id)
+                .map(userMissionPersistenceMapper::JpaEntityToModel)
+                .or(Optional::empty);
+    }
+
 }
