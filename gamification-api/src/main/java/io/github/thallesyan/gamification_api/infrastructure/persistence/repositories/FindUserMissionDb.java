@@ -12,6 +12,7 @@ import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.enti
 import io.github.thallesyan.gamification_api.infrastructure.persistence.mappers.UserMissionPersistenceMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,6 +34,15 @@ public class FindUserMissionDb implements FindUserMissionBoundary {
                 .findByUserAndMissionAndStatus(userJPA, missionJPA, ProgressStatusEnumJPA.getProgressJPAByProgressStatusEnum(progressStatusEnum))
                 .map(userMissionPersistenceMapper::JpaEntityToModel)
                 .or(Optional::empty);
+    }
+
+    @Override
+    public List<UserMissionProgress> byUserAndStatus(User user, ProgressStatusEnum progressStatusEnum) {
+        var userJPA = UserJPA.byIdentifier(user.getIdentifier());
+        return userMissionProgressPersistence
+                .findUserMissionProgressJPAByUserAndStatus(userJPA, ProgressStatusEnumJPA.getProgressJPAByProgressStatusEnum(progressStatusEnum))
+                .stream()
+                .map(userMissionPersistenceMapper::JpaEntityToModel).toList();
     }
 
 }

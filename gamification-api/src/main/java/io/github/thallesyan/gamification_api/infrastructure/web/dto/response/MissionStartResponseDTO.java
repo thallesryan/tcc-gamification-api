@@ -16,5 +16,6 @@ public class MissionStartResponseDTO {
     private String description;
     private List<UserGoalProgressResponseDTO> userGoalsProgress;
     private ProgressStatusEnum status;
-    private LocalDateTime startTime;
+    private LocalDateTime start;
+    private LocalDateTime end;
 }

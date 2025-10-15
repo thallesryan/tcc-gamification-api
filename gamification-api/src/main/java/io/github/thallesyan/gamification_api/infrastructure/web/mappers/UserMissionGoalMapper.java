@@ -10,9 +10,12 @@ import org.mapstruct.Mappings;
 public interface UserMissionGoalMapper {
 
     @Mappings({
-            @Mapping(source = "startDate", target = "startTime"),
+            @Mapping(source = "startDate", target = "start"),
+            @Mapping(source = "completionDate", target = "end"),
             @Mapping(source = "goal.title", target = "title"),
-            @Mapping(source = "goal.description", target = "description")
+            @Mapping(source = "goal.description", target = "description"),
+            @Mapping(source = "goal.order", target = "order")
     })
     UserGoalProgressResponseDTO  userGoalToUserGoalProgress(UserMissionGoalProgress userGoalProgressResponseDTO);
+
 }

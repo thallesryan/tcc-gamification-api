@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,4 +22,6 @@ public interface UserMissionProgressPersistence extends JpaRepository<UserMissio
     @Modifying
     @Query("update UserMissionProgressJPA m set m.status = :progressStatusEnum, m.startDate = now() where m.id = :userMissionId")
     Integer startUserMission(Integer userMissionId, ProgressStatusEnumJPA progressStatusEnum);
+
+    List<UserMissionProgressJPA> findUserMissionProgressJPAByUserAndStatus(UserJPA user, ProgressStatusEnumJPA progressStatusEnum);
 }

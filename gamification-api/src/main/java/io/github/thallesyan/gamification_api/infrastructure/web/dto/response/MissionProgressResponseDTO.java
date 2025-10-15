@@ -1,22 +1,23 @@
 package io.github.thallesyan.gamification_api.infrastructure.web.dto.response;
 
-import io.github.thallesyan.gamification_api.infrastructure.web.dto.enums.ProgressStatusDTOEnum;
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.List;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class UserGoalProgressResponseDTO {
-    private Integer id;
+public class MissionProgressResponseDTO {
     private String title;
     private String description;
-    private Integer order;
-    private ProgressStatusDTOEnum status;
+    private List<UserGoalProgressResponseDTO> userGoalsProgress;
+    private ProgressStatusEnum status;
     private LocalDateTime start;
     private LocalDateTime end;
 }
+
+

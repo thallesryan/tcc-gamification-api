@@ -23,9 +23,7 @@ import java.util.stream.Collectors;
 public class MissionController {
 
     private final MissionApplication missionApplication;
-    private final UserMissionApplication userMissionApplication;
     private final MissionMapper missionMapper;
-    private final UserMissionMapper userMissionMapper;
 
     @PostMapping("create")
     public ResponseEntity<MissionResponseDTO> createMission(@RequestBody MissionCreationRequestDTO missionCreationRequestDTO) {
@@ -33,35 +31,7 @@ public class MissionController {
         return new ResponseEntity<>(missionMapper.toMissionResponseDTO(createdMission), HttpStatus.CREATED);
     }
 
-    @PostMapping("user/bind-missions")
-    public ResponseEntity<MissionResponseDTO> bindMissionsToUser(@RequestBody BindUserMissionRequestDTO bindUserMissionRequestDTO) {
-        var missions = bindUserMissionRequestDTO.getMissions();
-        var missionsIds = missions.stream().map(MissionBinding::getIdentifier).map(UUID::fromString).collect(Collectors.toList());
-        userMissionApplication.associateUserMission(bindUserMissionRequestDTO.getUserEmail(), missionsIds);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
 
-    //todo get missions by user
-    //header identifierType, identifierValue
-
-    //todo start mission and set the fist goal in progress, return this goal
-    //todo validate mission already started and return 422?
-    //todo return 422 if the mission was not associated with the user... use bind-missions
-    @PostMapping("user/start-mission")
-    public ResponseEntity<MissionStartResponseDTO> start(@RequestBody StartMissionRequestDTO startMissionRequestDTO) {
-        var userMission = switch (startMissionRequestDTO.getUserIdentification().getUserIdentifierType()){
-            case EMAIL -> userMissionApplication.startMissionByUserEmail(startMissionRequestDTO.getUserIdentification().getUserIdentifierValue(), startMissionRequestDTO.getMissionIdentifier());
-            case IDENTIFIER -> userMissionApplication.startMissionByUserIdentifier(startMissionRequestDTO.getUserIdentification().getUserIdentifierValue(), startMissionRequestDTO.getMissionIdentifier());
-        };
-
-        return new ResponseEntity<>(userMissionMapper.toStartMissionResponseDTO(userMission), HttpStatus.CREATED);
-    }
-
-    //todo resolve goal, modify return if all goals are finished
-    @PostMapping("user/goal")
-    public ResponseEntity<?> resolveGoal(@RequestBody BindUserMissionRequestDTO bindUserMissionRequestDTO) {
-      return null;
-    }
 
     //todo make endpoint to get mission progress and goals related
 

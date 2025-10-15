@@ -1,6 +1,7 @@
 package io.github.thallesyan.gamification_api.infrastructure.web.mappers;
 
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Goal;
+import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionGoalProgress;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.GoalDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.UserGoalProgressResponseDTO;
 import org.mapstruct.Mapper;
@@ -18,6 +19,4 @@ public interface GoalMapper {
     @Mapping(target = "title", source = "title")
     @Mapping(target = "description", source = "description")
     GoalDTO toGoalDTO(Goal goal);
-
-    UserGoalProgressResponseDTO toGoalResponseDTO(Goal goal);
 }
