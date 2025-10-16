@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface UserMissionGoalProgressPersistence extends JpaRepository<UserMissionGoalProgressJPA, Integer> {
 
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("update UserMissionGoalProgressJPA m set m.status = :progressStatusEnum, m.startDate = now() where m.id = :userMissionGoalId")
     Integer startUserMissionGoal(Integer userMissionGoalId, ProgressStatusEnumJPA progressStatusEnum);
 

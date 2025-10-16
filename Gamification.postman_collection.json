@@ -1,0 +1,590 @@
+{
+	"info": {
+		"_postman_id": "7d436273-9a69-47d8-9f2c-f347b9020343",
+		"name": "Gamification",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "21243384"
+	},
+	"item": [
+		{
+			"name": "runner",
+			"item": [
+				{
+					"name": "0 - Create Platform",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json()\r",
+									"pm.environment.set(\"Platform\", jsonData.name);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"PUC_MINAS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/platform/create"
+					},
+					"response": []
+				},
+				{
+					"name": "1 - Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json()\r",
+									"pm.environment.set(\"UserIdentifier\", jsonData.identifier);\r",
+									"pm.environment.set(\"UserEmail\", jsonData.email)\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Thalles Ryan\",\n  \"email\": \"thalles.ryan2@gmail.com\",\n  \"dateOfBirth\": \"07/04/2002\",\n  \"platform\": {\n    \"name\": \"{{Platform}}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/user/register"
+					},
+					"response": []
+				},
+				{
+					"name": "2 - Create Mission 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json()\r",
+									"pm.environment.set(\"Mission1Identifier\", jsonData.identifier);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Missão de Aprendizado de Spring Boot\",\n    \"description\": \"Uma missão para aprender os conceitos fundamentais do Spring Boot, incluindo controllers, DTOs e integração com banco de dados\",\n    \"difficultyLevel\": 3,\n    \"goals\": [\n        {\n            \n            \"title\": \"Criar um Controller REST\",\n            \"description\": \"Implementar um controller com endpoints GET, POST, PUT e DELETE\",\n            \"order\": 1\n        },\n        {\n            \n            \"title\": \"Configurar DTOs\",\n            \"description\": \"Criar DTOs para request e response com validações\",\n            \"order\": 2\n        },\n        {\n            \n            \"title\": \"Integrar com Banco de Dados\",\n            \"description\": \"Configurar JPA e criar repositórios para persistência de dados\",\n            \"order\": 3\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/mission/create"
+					},
+					"response": []
+				},
+				{
+					"name": "2.1 - Create Mission 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json()\r",
+									"pm.environment.set(\"Mission2Identifier\", jsonData.identifier);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Aprendizado Francês\",\n  \"description\": \"Francês básico\",\n  \"difficultyLevel\": 3,\n  \"goals\": [\n    {\n      \"title\": \"Saudações\",\n      \"description\": \"Apredizado de saudações básicas\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/mission/create"
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Associate Missions",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userEmail\": \"{{UserEmail}}\",\n    \"missions\": [\n        {\n            \"identifier\": \"{{Mission1Identifier}}\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/user-mission/bind-missions"
+					},
+					"response": []
+				},
+				{
+					"name": "4 - Start Mission 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userIdentification\": {\n        \"userIdentifierType\": \"EMAIL\",\n        \"userIdentifierValue\": \"{{UserEmail}}\"\n    }, \n    \"missionIdentifier\": \"{{Mission1Identifier}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/user-mission/start-mission"
+					},
+					"response": []
+				},
+				{
+					"name": "4.1 - Start Mission 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userIdentification\": {\n        \"userIdentifierType\": \"EMAIL\",\n        \"userIdentifierValue\": \"{{UserEmail}}\"\n    }, \n    \"missionIdentifier\": \"{{Mission2Identifier}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/user-mission/start-mission"
+					},
+					"response": []
+				},
+				{
+					"name": "5 - user missions by progress",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/user-mission/{{UserEmail}}/status/IN_PROGRESS"
+					},
+					"response": []
+				},
+				{
+					"name": "6 - Next Goal",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "platform",
+								"value": "{{Platform}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/user-mission/mission/{{Mission1Identifier}}/user/{{UserEmail}}/next-goal",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"user-mission",
+								"mission",
+								"{{Mission1Identifier}}",
+								"user",
+								"{{UserEmail}}",
+								"next-goal"
+							],
+							"query": [
+								{
+									"key": "platform",
+									"value": "{{Platform}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7.1 - resolve next goal - first goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "platform",
+								"value": "{{Platform}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/api/user-mission/mission/{{Mission1Identifier}}/user/{{UserEmail}}/resolve-next-goal"
+					},
+					"response": []
+				},
+				{
+					"name": "7.2 - resolve next goal - second goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "platform",
+								"value": "{{Platform}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/api/user-mission/mission/{{Mission1Identifier}}/user/{{UserEmail}}/resolve-next-goal"
+					},
+					"response": []
+				},
+				{
+					"name": "7.3 - resolve next goal - third goal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "platform",
+								"value": "{{Platform}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/api/user-mission/mission/{{Mission1Identifier}}/user/{{UserEmail}}/resolve-next-goal"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mission",
+			"item": [
+				{
+					"name": "Create Mission 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Ano Letivo\",\r\n    \"description\": \"Cadastro do ano letivo do aluno\",\r\n    // \"difficultyLevel\": 3,\r\n    \"goals\": [\r\n        {\r\n            \"title\": \"Assinar Documentos\",\r\n            \"description\": \"Documentos necessários para realização da matrícula\",\r\n            \"order\": 1\r\n        },\r\n        {\r\n            \"title\": \"Monstar grade do semestre\",\r\n            \"description\": \"Montar grade com matérias relacionadas ao semestre vigente\",\r\n            \"order\": 2\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/api/mission/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Mission 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Aprendizado Francês\",\r\n  \"description\": \"Francês básico\",\r\n  \"difficultyLevel\": 3,\r\n  \"goals\": [\r\n    {\r\n      \"title\": \"Saudações\",\r\n      \"description\": \"Apredizado de saudações básicas\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/api/mission/create"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Thalles Ryan\",\r\n  \"email\": \"thalles.ryan2@gmail.com\",\r\n  \"dateOfBirth\": \"08/04/2002\",\r\n  \"platform\": {\r\n    \"name\": \"PUC_MINAS\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/api/user/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by Email",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Thalles Ryan\",\n  \"email\": \"thalles.ryan2@gmail.com\",\n  \"dateOfBirth\": \"08/04/2002\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/api/user/email/thalles.ryan2@gmail.com"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Platform",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"PUC_MINAS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/platform/create"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Mission",
+			"item": [
+				{
+					"name": "Associate Missions",
+					"item": [
+						{
+							"name": "User Not Found",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userEmail\": \"qidhiahdisadishaih\",\n  \"missions\": [\n    {\n        \"identifier\": \"\"\n    }\n  ]\n}"
+								},
+								"url": "{{baseURL}}/api/user-mission/bind-missions"
+							},
+							"response": []
+						},
+						{
+							"name": "Mission Associate with sucess",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"userEmail\": \"thalles.ryan2@gmail.com\",\n    \"missions\": [\n        {\n            \"identifier\": \"b8ffa45c-6661-4245-b889-26961736d619\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/user-mission/bind-missions"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Start Mission",
+					"item": [
+						{
+							"name": "Start Mission",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userIdentification\": {\r\n        \"userIdentifierType\": \"EMAIL\",\r\n        \"userIdentifierValue\": \"thalles.ryan2@gmail.com\"\r\n    }, \r\n    \"missionIdentifier\": \"b8ffa45c-6661-4245-b889-26961736d619\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/api/user-mission/start-mission"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Progress",
+					"item": [
+						{
+							"name": "In progress",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{baseURL}}/api/user-mission/thalles.ryan2@gmail.com/status/IN_PROGRESS"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Next Goal",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "platfom",
+								"value": "{{Platform}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/api/user-mission/mission/{{Mission1Identifier}}}/user/{{UserIdentifier}}/next-goal"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": ""
+		},
+		{
+			"key": "UserEmail",
+			"value": ""
+		}
+	]
+}
