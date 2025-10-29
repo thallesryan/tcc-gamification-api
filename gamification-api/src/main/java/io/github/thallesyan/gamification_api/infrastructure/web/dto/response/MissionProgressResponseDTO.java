@@ -14,6 +14,7 @@ import java.util.List;
 public class MissionProgressResponseDTO {
     private String title;
     private String description;
+    private Double progressPercentage;
     private List<UserGoalProgressResponseDTO> userGoalsProgress;
     private ProgressStatusEnum status;
     private LocalDateTime start;
