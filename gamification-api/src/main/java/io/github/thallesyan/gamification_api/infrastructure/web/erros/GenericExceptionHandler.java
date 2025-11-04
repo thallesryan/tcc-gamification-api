@@ -1,4 +1,4 @@
-package io.github.thallesyan.gamification_api.infrastructure;
+package io.github.thallesyan.gamification_api.infrastructure.web.erros;
 
 import io.github.thallesyan.gamification_api.application.exceptions.UserMissionNotFound;
 import org.springframework.http.HttpStatus;

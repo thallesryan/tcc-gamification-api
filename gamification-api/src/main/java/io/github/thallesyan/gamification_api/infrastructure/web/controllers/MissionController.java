@@ -8,9 +8,11 @@ import io.github.thallesyan.gamification_api.application.usecases.MissionApplica
 import io.github.thallesyan.gamification_api.application.usecases.UserMissionApplication;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.*;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserMissionMapper;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -26,7 +28,7 @@ public class MissionController {
     private final MissionMapper missionMapper;
 
     @PostMapping("create")
-    public ResponseEntity<MissionResponseDTO> createMission(@RequestBody MissionCreationRequestDTO missionCreationRequestDTO) {
+    public ResponseEntity<MissionResponseDTO> createMission(@RequestBody @Valid MissionCreationRequestDTO missionCreationRequestDTO) {
         var createdMission = missionApplication.createMission(missionMapper.toMission(missionCreationRequestDTO));
         return new ResponseEntity<>(missionMapper.toMissionResponseDTO(createdMission), HttpStatus.CREATED);
     }
