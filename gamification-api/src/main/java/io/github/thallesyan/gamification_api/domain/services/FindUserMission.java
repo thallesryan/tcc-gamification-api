@@ -7,5 +7,5 @@ import java.util.List;
 
 @FunctionalInterface
 public interface FindUserMission {
-    UserMissionProgress byMissionIdAndStatus(String userIdentifier, String missionIdentifier, ProgressStatusEnum progressStatusEnum);
+    UserMissionProgress byMissionIdAndStatus(String userIdentifier, String platform, String missionIdentifier, ProgressStatusEnum progressStatusEnum);
 }

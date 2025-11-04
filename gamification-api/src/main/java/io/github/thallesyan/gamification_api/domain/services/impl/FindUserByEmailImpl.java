@@ -17,7 +17,7 @@ public class FindUserByEmailImpl implements FindUserByEmail {
     }
 
     @Override
-    public Optional<User> byEmail(String email) {
-        return findUserBoundary.ByEmail(email);
+    public Optional<User> byEmail(String email, String platform) {
+        return findUserBoundary.ByEmail(email, platform);
     }
 }

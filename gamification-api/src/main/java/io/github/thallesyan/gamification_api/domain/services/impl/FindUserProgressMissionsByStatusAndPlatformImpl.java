@@ -27,7 +27,7 @@ public class FindUserProgressMissionsByStatusAndPlatformImpl implements FindUser
 
     @Override
     public List<UserMissionProgress> byUserEmail(String userEmail, String platform, ProgressStatusEnum status) {
-        var user = findUserByEmail.byEmail(userEmail).orElseThrow(UserNotFoundException::new);
+        var user = findUserByEmail.byEmail(userEmail, platform).orElseThrow(UserNotFoundException::new);
         return findUserMissionBoundary.byUserAndStatus(user, status);
     }
 }

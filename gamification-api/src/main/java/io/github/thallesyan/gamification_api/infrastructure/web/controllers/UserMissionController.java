@@ -36,19 +36,17 @@ public class UserMissionController {
     public ResponseEntity<MissionResponseDTO> bindMissionsToUser(@RequestBody BindUserMissionRequestDTO bindUserMissionRequestDTO) {
         var missions = bindUserMissionRequestDTO.getMissions();
         var missionsIds = missions.stream().map(MissionBinding::getIdentifier).map(UUID::fromString).collect(Collectors.toList());
-        userMissionApplication.associateUserMission(bindUserMissionRequestDTO.getUserEmail(), missionsIds);
+        userMissionApplication.associateUserMission(bindUserMissionRequestDTO.getUserEmail(), bindUserMissionRequestDTO.getPlatform(), missionsIds);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
-    //todo start mission and set the fist goal in progress, return this goal
-    //todo validate mission already started and return 422?
-    //todo return 422 if the mission was not associated with the user... use bind-missions
+    //TODO validate trying to start mission already started
     @PostMapping("start-mission")
-    public ResponseEntity<MissionStartResponseDTO> start(@RequestBody StartMissionRequestDTO startMissionRequestDTO) {
+    public ResponseEntity<MissionStartResponseDTO> start(@RequestBody StartMissionRequestDTO startMissionRequestDTO, @RequestHeader("platform") String platform) {
         var userMission = switch (startMissionRequestDTO.getUserIdentification().getUserIdentifierType()){
-            case EMAIL -> userMissionApplication.startMissionByUserEmail(startMissionRequestDTO.getUserIdentification().getUserIdentifierValue(), startMissionRequestDTO.getMissionIdentifier());
-            case IDENTIFIER -> userMissionApplication.startMissionByUserIdentifier(startMissionRequestDTO.getUserIdentification().getUserIdentifierValue(), startMissionRequestDTO.getMissionIdentifier());
+            case EMAIL -> userMissionApplication.startMissionByUserEmail(startMissionRequestDTO.getUserIdentification().getUserIdentifierValue(),platform, startMissionRequestDTO.getMissionIdentifier());
+            case IDENTIFIER -> userMissionApplication.startMissionByUserIdentifier(startMissionRequestDTO.getUserIdentification().getUserIdentifierValue(),platform, startMissionRequestDTO.getMissionIdentifier());
         };
 
         return new ResponseEntity<>(userMissionMapper.toStartMissionResponseDTO(userMission), HttpStatus.CREATED);

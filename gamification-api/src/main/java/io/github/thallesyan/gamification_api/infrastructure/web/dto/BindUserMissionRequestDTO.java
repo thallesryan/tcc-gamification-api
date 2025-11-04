@@ -16,6 +16,10 @@ public class BindUserMissionRequestDTO {
 
     @NotNull
     private String userEmail;
+
+    @NotNull
+    private String platform;
+
     @NotEmpty
     private Set<MissionBinding> missions;
 }

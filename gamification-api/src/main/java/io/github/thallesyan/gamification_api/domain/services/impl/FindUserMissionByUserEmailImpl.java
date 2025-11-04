@@ -26,8 +26,8 @@ public class FindUserMissionByUserEmailImpl implements FindUserMission {
     }
 
     @Override
-    public UserMissionProgress byMissionIdAndStatus(String userEmail, String missionIdentifier, ProgressStatusEnum progressStatusEnum) {
-        var user = findUserBoundary.ByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+    public UserMissionProgress byMissionIdAndStatus(String userEmail, String platform, String missionIdentifier, ProgressStatusEnum progressStatusEnum) {
+        var user = findUserBoundary.ByEmail(userEmail, platform).orElseThrow(UserNotFoundException::new);
         return boundary
                 .byUserIdentifierAndMissionAndStatus(user, Mission.byIdentifier(missionIdentifier), progressStatusEnum)
                 .orElseThrow(() -> UserMissionNotFound.missionToStartNotFound(user.getEmail(), missionIdentifier));

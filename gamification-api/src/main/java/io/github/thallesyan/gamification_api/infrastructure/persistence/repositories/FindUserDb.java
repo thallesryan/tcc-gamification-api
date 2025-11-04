@@ -3,6 +3,7 @@ package io.github.thallesyan.gamification_api.infrastructure.persistence.reposit
 import io.github.thallesyan.gamification_api.domain.boundary.FindUserBoundary;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.UserJpaPersistence;
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.foundation.PlatformJPA;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.mappers.UserPersistenceMapper;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class FindUserDb implements FindUserBoundary {
     }
 
     @Override
-    public Optional<User> ByEmail(String email) {
-        return userJpaPersistence.findByEmail(email)
+    public Optional<User> ByEmail(String email, String platform) {
+        return userJpaPersistence.findByEmailAndPlatform(email, new PlatformJPA(platform))
                 .map(userPersistenceMapper::toUser);
     }
 

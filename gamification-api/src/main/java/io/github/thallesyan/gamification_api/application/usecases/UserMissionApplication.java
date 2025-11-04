@@ -37,8 +37,8 @@ public class UserMissionApplication {
 
     //todo Criar retornos diferentes para caso todas missoes tenham sido associadas e quando so algumas estivetem. Ex em casos de missoes nao encontradas pelos ids
     //todo criar handler para excecoes, quando n achar missionId etc
-    public void associateUserMission(String userEmail, List<UUID> missionsIds) {
-        var userOpt = findUserByEmail.byEmail(userEmail);
+    public void associateUserMission(String userEmail, String platform, List<UUID> missionsIds) {
+        var userOpt = findUserByEmail.byEmail(userEmail, platform);
         if(userOpt.isEmpty()){
             throw new UserNotFoundException("User does not exist");
         }
@@ -50,13 +50,13 @@ public class UserMissionApplication {
 
     //todo quando for utilizado email, terá que passar platform também
     //todo tornar user mission e progress unicos (só poderá ter uma missao com o id em progress, n deixar cadastrar outra)
-    public UserMissionProgress startMissionByUserEmail(String userEmail, String missionId) {
-        var userMission = findUserMissionByEmail.byMissionIdAndStatus(userEmail, missionId, ProgressStatusEnum.ASSIGNED);
+    public UserMissionProgress startMissionByUserEmail(String userEmail, String platform, String missionId) {
+        var userMission = findUserMissionByEmail.byMissionIdAndStatus(userEmail, platform, missionId, ProgressStatusEnum.ASSIGNED);
         return updateUserMission.startMission(userMission);
     }
 
-    public UserMissionProgress startMissionByUserIdentifier(String userIdentifier, String missionId) {
-        var userMission = findUserMissionByIdentifier.byMissionIdAndStatus(userIdentifier, missionId, ProgressStatusEnum.ASSIGNED);
+    public UserMissionProgress startMissionByUserIdentifier(String userIdentifier, String platform, String missionId) {
+        var userMission = findUserMissionByIdentifier.byMissionIdAndStatus(userIdentifier, platform, missionId, ProgressStatusEnum.ASSIGNED);
         return updateUserMission.startMission(userMission);
     }
 
@@ -65,22 +65,22 @@ public class UserMissionApplication {
     }
 
     public Optional<UserMissionGoalProgress> getNextGoal(String userEmail, String platformName, String missionId) {
-        var userMission = findUserMissionByEmail.byMissionIdAndStatus(userEmail, missionId, ProgressStatusEnum.IN_PROGRESS);
+        var userMission = findUserMissionByEmail.byMissionIdAndStatus(userEmail,platformName,  missionId, ProgressStatusEnum.IN_PROGRESS);
         return userMission.getNextGoal();
     }
     public Optional<UserMissionGoalProgress> getCurrentGoal(String userEmail, String platformName, String missionId){
-        var userMission = findUserMissionByEmail.byMissionIdAndStatus(userEmail, missionId, ProgressStatusEnum.IN_PROGRESS);
+        var userMission = findUserMissionByEmail.byMissionIdAndStatus(userEmail, platformName, missionId, ProgressStatusEnum.IN_PROGRESS);
         return userMission.getCurrentGoal();
     }
 
     public Optional<UserMissionGoalProgress> getLastGoal(String userEmail, String platformName, String missionId){
-        var userMission = findUserMissionByEmail.byMissionIdAndStatus(userEmail, missionId, ProgressStatusEnum.IN_PROGRESS);
+        var userMission = findUserMissionByEmail.byMissionIdAndStatus(userEmail,platformName, missionId, ProgressStatusEnum.IN_PROGRESS);
         return userMission.getLastGoal();
     }
 
     public UserMissionProgress resolveGoalInProgress(String userEmail, String platformName, String missionId){
         var userMission = findUserMissionByEmail
-                .byMissionIdAndStatus(userEmail, missionId, ProgressStatusEnum.IN_PROGRESS);
+                .byMissionIdAndStatus(userEmail, platformName, missionId, ProgressStatusEnum.IN_PROGRESS);
 
         var currentGoal = userMission
                 .getCurrentGoal()

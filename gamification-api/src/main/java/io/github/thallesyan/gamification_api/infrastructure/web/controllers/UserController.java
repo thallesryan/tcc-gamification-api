@@ -30,9 +30,10 @@ public class UserController {
     }
 
     @GetMapping("email/{email}")
-    public ResponseEntity<UserResponseDTO> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<UserResponseDTO> getUserByEmail(@PathVariable String email, @RequestHeader("platform") String platform) {
+
         try {
-            var userResponseDTO = userMapper.toUserResponseDTO(userApplication.findUserByEmail(email));
+            var userResponseDTO = userMapper.toUserResponseDTO(userApplication.findUserByEmail(email, platform));
             return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
         }catch (UserNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

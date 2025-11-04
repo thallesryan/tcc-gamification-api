@@ -22,8 +22,8 @@ public class UserApplication {
         return registerUser.registerUser(user);
     }
 
-    public User findUserByEmail(String email) {
-        return findUserByEmail.byEmail(email)
+    public User findUserByEmail(String email, String platform) {
+        return findUserByEmail.byEmail(email, platform)
                 .orElseThrow(UserNotFoundException::new);
     }
 }

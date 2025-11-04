@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface FindUserBoundary {
 
-    Optional<User> ByEmail(String email);
+    Optional<User> ByEmail(String email, String platform);
 
     boolean verifyUserExistsByEmail(String email);
 }

@@ -7,5 +7,5 @@ import java.util.Optional;
 @FunctionalInterface
 public interface FindUserByEmail {
 
-    Optional<User> byEmail(String email);
+    Optional<User> byEmail(String email, String platform);
 }
