@@ -2,6 +2,7 @@ package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 
 import io.github.thallesyan.gamification_api.application.exceptions.UserMissionNotFound;
 import io.github.thallesyan.gamification_api.application.usecases.UserMissionApplication;
+import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.BindUserMissionRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.MissionBinding;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.ResolveGoalRequestDTO;
@@ -39,8 +40,6 @@ public class UserMissionController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    //todo get missions by user
-    //header identifierType, identifierValue
 
     //todo start mission and set the fist goal in progress, return this goal
     //todo validate mission already started and return 422?
@@ -100,9 +99,10 @@ public class UserMissionController {
     @GetMapping("{userEmail}/status/{missionStatus}")
     public ResponseEntity<List<MissionProgressResponseDTO>> bindMissionsToUser(
             @PathVariable("userEmail") String userEmail,
-            @PathVariable("missionStatus") String missionStatus
+            @PathVariable("missionStatus") String missionStatus,
+            @RequestHeader("platform") String platform
     ) {
-        var missions = userMissionApplication.getMissionsInProgressByUserIdentifier(userEmail, missionStatus);
+        var missions = userMissionApplication.getMissionsInProgressByUserIdentifier(userEmail, platform, ProgressStatusEnum.fromString(missionStatus));
         if(missions.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         var missionProgressResponse = missions.stream().map(userMissionMapper::toMissionProgressResponseDTO).toList();
         return new ResponseEntity<>(missionProgressResponse, HttpStatus.OK);

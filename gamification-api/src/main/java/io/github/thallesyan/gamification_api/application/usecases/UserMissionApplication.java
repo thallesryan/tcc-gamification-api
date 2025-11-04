@@ -60,8 +60,8 @@ public class UserMissionApplication {
         return updateUserMission.startMission(userMission);
     }
 
-    public List<UserMissionProgress> getMissionsInProgressByUserIdentifier(String userEmail, String platformName) {
-        return findUserProgressMissionsByStatusAndPlatform.byUserEmail(userEmail, platformName, ProgressStatusEnum.IN_PROGRESS);
+    public List<UserMissionProgress> getMissionsInProgressByUserIdentifier(String userEmail, String platformName, ProgressStatusEnum status) {
+        return findUserProgressMissionsByStatusAndPlatform.byUserEmail(userEmail, platformName, status);
     }
 
     public Optional<UserMissionGoalProgress> getNextGoal(String userEmail, String platformName, String missionId) {

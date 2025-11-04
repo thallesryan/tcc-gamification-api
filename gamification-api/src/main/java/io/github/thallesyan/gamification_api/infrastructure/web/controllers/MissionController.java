@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//todo criar bean validacoes
 @RestController
 @RequestMapping("/api/mission/")
 @AllArgsConstructor
