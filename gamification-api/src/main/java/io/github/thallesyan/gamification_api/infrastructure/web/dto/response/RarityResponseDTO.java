@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class RarityResponseDTO {
     private RarityEnum value;
-    private Double points;
+    private Integer points;
 }

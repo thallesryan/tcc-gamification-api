@@ -35,11 +35,6 @@ public class UpdateUserMissionDb implements UpdateUserMissionBoundary {
                 .findById(userMissionProgress.getId())
                 .map(userMissionPersistenceMapper::JpaEntityToModel)
                 .orElse(null);
-
-//        userMissionProgress.setStatus(progressStatusEnum);
-//        userMissionProgress.setStartDate(LocalDateTime.now());
-//
-//        return userMissionProgress;
     }
 
     @Override
@@ -57,11 +52,6 @@ public class UpdateUserMissionDb implements UpdateUserMissionBoundary {
                 .findById(id)
                 .map(userMissionGoalPersistenceMapper::JpaEntityToModel)
                 .orElse(null);
-
-
-//        userMissionGoalProgress.setStatus(progressStatusEnum);
-//        userMissionGoalProgress.setStartDate(LocalDateTime.now());
-//        return userMissionGoalProgress;
     }
 
     @Override
