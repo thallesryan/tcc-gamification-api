@@ -15,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Mission extends BaseInformation {
     private Integer estimatedDurationHours;
+    private Integer points;
     private List<Goal> goals;
     private List<Rule> rules;
     private Reward reward;

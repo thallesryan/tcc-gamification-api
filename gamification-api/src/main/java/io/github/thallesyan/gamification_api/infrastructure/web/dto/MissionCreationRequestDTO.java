@@ -19,6 +19,7 @@ public class MissionCreationRequestDTO {
     @NotEmpty(message = "Description cant be empty or null")
     private String description;
     private Integer difficultyLevel;
+    private Integer points;
     @NotEmpty
     private List<GoalDTO> goals;
     //@Valid

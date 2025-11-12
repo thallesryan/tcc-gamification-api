@@ -30,6 +30,9 @@ public class MissionJPA extends BaseInformationJPA {
     @Column(name = "estimated_duration_hours")
     private Integer estimatedDurationHours;
     
+    @Column(name = "points")
+    private Integer points;
+    
     @OneToMany(mappedBy = "mission", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<GoalJPA> goals = new ArrayList<>();
     

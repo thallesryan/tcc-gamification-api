@@ -23,8 +23,10 @@ public class UserMissionApplication {
     private final FindUserMissionById findUserMissionById;
     private final UpdateUserMission updateUserMission;
     private final FindUserProgressMissionsByStatusAndPlatform findUserProgressMissionsByStatusAndPlatform;
+    private final FindUserProgress findUserProgress;
+    private final UpdateUserProgress updateUserProgress;
 
-    public UserMissionApplication(FindMission findMission, FindUserByEmail findUserByEmail, BindUserMissions bindUserMissions, @Qualifier("findUserMissionByUserIdentifierImpl") FindUserMission findUserMissionByIdentifier, @Qualifier("findUserMissionByUserEmailImpl") FindUserMission findUserMissionByEmail, FindUserMissionById findUserMissionById, UpdateUserMission updateUserMission, FindUserProgressMissionsByStatusAndPlatform findUserProgressMissionsByStatusAndPlatform) {
+    public UserMissionApplication(FindMission findMission, FindUserByEmail findUserByEmail, BindUserMissions bindUserMissions, @Qualifier("findUserMissionByUserIdentifierImpl") FindUserMission findUserMissionByIdentifier, @Qualifier("findUserMissionByUserEmailImpl") FindUserMission findUserMissionByEmail, FindUserMissionById findUserMissionById, UpdateUserMission updateUserMission, FindUserProgressMissionsByStatusAndPlatform findUserProgressMissionsByStatusAndPlatform, FindUserProgress findUserProgress, UpdateUserProgress updateUserProgress) {
         this.findMission = findMission;
         this.findUserByEmail = findUserByEmail;
         this.bindUserMissions = bindUserMissions;
@@ -33,6 +35,8 @@ public class UserMissionApplication {
         this.findUserMissionById = findUserMissionById;
         this.updateUserMission = updateUserMission;
         this.findUserProgressMissionsByStatusAndPlatform = findUserProgressMissionsByStatusAndPlatform;
+        this.findUserProgress = findUserProgress;
+        this.updateUserProgress = updateUserProgress;
     }
 
     //todo Criar retornos diferentes para caso todas missoes tenham sido associadas e quando so algumas estivetem. Ex em casos de missoes nao encontradas pelos ids
@@ -90,14 +94,34 @@ public class UserMissionApplication {
                 .getNextGoal();
 
         var updatedMission = updateUserMission.completeGoal(userMission, currentGoal);
+        addGoalCompletedToUserProgress(userMission);
 
         nextGoal.ifPresentOrElse(
                 next -> updateUserMission.startGoal(updatedMission, next),
                 () -> {
                     updateUserMission.completeMission(updatedMission);
+                    addPointsToUserProgress(updatedMission);
                 }
         );
 
         return findUserMissionById.byId(userMission.getId());
+    }
+
+    private void addGoalCompletedToUserProgress(UserMissionProgress userMissionProgress) {
+        var user = userMissionProgress.getUser();
+        findUserProgress.findByUser(user).ifPresent(userProgress -> {
+            userProgress.addGoalCompleted();
+            updateUserProgress.updateUserProgress(userProgress);
+        });
+    }
+
+    private void addPointsToUserProgress(UserMissionProgress userMissionProgress) {
+        var mission = userMissionProgress.getMission();
+        var user = userMissionProgress.getUser();
+        findUserProgress.findByUser(user).ifPresent(userProgress -> {
+            userProgress.addMissionPoints(mission.getPoints());
+            userProgress.addMissionPoints();
+            updateUserProgress.updateUserProgress(userProgress);
+        });
     }
 }

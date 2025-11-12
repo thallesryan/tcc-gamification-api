@@ -20,6 +20,7 @@ public interface MissionMapper {
     @Mapping(target = "identifier", ignore = true)
     @Mapping(target = "title", source = "missionCreationRequestDTO.title")
     @Mapping(target = "description", source = "missionCreationRequestDTO.description")
+    @Mapping(target = "points", source = "missionCreationRequestDTO.points")
     //@Mapping(target = "reward.badge.rarity.platform.name", source = "platform")
     Mission toMission(MissionCreationRequestDTO missionCreationRequestDTO, String platform);
 
@@ -28,5 +29,6 @@ public interface MissionMapper {
     @Mapping(target = "title", source = "title")
     @Mapping(target = "description", source = "description")
     @Mapping(target = "difficultyLevel", ignore = true)
+    @Mapping(target = "points", source = "points")
     MissionResponseDTO toMissionResponseDTO(Mission mission);
 }
