@@ -1,5 +1,6 @@
 package io.github.thallesyan.gamification_api.infrastructure.web.dto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -20,4 +21,8 @@ public class MissionCreationRequestDTO {
     private Integer difficultyLevel;
     @NotEmpty
     private List<GoalDTO> goals;
+    //@Valid
+    //private RuleDTO rule;
+    @Valid
+    private RewardAssociationRequestDTO reward;
 }

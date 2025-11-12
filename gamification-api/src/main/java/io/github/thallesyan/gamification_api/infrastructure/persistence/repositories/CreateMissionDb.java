@@ -21,7 +21,6 @@ public class CreateMissionDb implements CreateMissionBoundary {
     public Mission createMission(Mission mission) {
         var missionJPA = missionPersistenceMapper.toMissionJPA(mission);
         missionJPA.getGoals().forEach(g -> g.setMission(missionJPA));
-
         var missionCreatedDb = missionJpaPersistence.save(missionJPA);
         return missionPersistenceMapper.toMission(missionCreatedDb);
     }

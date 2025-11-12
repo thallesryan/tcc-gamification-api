@@ -35,6 +35,10 @@ public class MissionJPA extends BaseInformationJPA {
     
     @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RuleJPA> rules = new ArrayList<>();
+    
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "reward_id")
+    private RewardJPA reward;
 
     public static MissionJPA byMissionAndGoalsIdentifier(Mission mission) {
         var missionJPA = new MissionJPA(mission.getIdentifier());

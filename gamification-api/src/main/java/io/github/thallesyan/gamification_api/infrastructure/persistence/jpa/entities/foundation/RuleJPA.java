@@ -26,6 +26,9 @@ public class RuleJPA extends BaseEntityJPA {
     @Column(name = "priority")
     private Integer priority = 0;
     
+    @Column(name = "duration_limit")
+    private Long durationLimitMillis;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private MissionJPA mission;

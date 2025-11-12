@@ -5,11 +5,12 @@ import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.enti
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {GoalPersistenceMapper.class})
+@Mapper(componentModel = "spring", uses = {GoalPersistenceMapper.class, RulePersistenceMapper.class, RewardPersistenceMapper.class})
 public interface MissionPersistenceMapper {
 
     @Mapping(target = "goals", source = "goals")
-    @Mapping(target = "rules", ignore = true)
+    @Mapping(target = "rules", source = "rules")
+    @Mapping(target = "reward", source = "reward")
     @Mapping(target = "difficultyLevel", ignore = true)
     @Mapping(target = "estimatedDurationHours", ignore = true)
     @Mapping(target = "identifier", source = "identifier")
@@ -21,6 +22,8 @@ public interface MissionPersistenceMapper {
     MissionJPA toMissionJPA(Mission mission);
 
     @Mapping(target = "goals", source = "goals")
+    @Mapping(target = "rules", source = "rules")
+    @Mapping(target = "reward", source = "reward")
     @Mapping(target = "identifier", source = "identifier")
     @Mapping(target = "title", source = "title")
     @Mapping(target = "description", source = "description")

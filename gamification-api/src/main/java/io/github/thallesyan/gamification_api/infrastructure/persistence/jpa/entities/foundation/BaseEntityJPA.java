@@ -27,6 +27,7 @@ public abstract class BaseEntityJPA {
     @Column(name = "identifier", columnDefinition = "BINARY(16)")
     private UUID identifier;
 
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
