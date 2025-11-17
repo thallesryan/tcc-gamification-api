@@ -17,5 +17,6 @@ public class MissionResponseDTO {
     private String description;
     private Integer difficultyLevel;
     private Integer points;
+    private String estimatedDuration;
     private List<GoalDTO> goals;
 }

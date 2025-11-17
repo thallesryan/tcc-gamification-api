@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Mission extends BaseInformation {
-    private Integer estimatedDurationHours;
+    private Duration estimatedDuration;
     private Integer points;
     private List<Goal> goals;
     private List<Rule> rules;

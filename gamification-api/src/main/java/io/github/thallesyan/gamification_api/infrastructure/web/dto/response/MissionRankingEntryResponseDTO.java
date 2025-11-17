@@ -17,6 +17,6 @@ public class MissionRankingEntryResponseDTO {
     private String userEmail;
     private LocalDateTime startedAt;
     private LocalDateTime completedAt;
-    private Long completionTimeInSeconds;
+    private String completionTime;
 }
 

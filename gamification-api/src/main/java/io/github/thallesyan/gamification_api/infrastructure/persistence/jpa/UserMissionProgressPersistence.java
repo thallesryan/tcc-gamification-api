@@ -31,20 +31,24 @@ public interface UserMissionProgressPersistence extends JpaRepository<UserMissio
     @Query("update UserMissionProgressJPA m set m.status = :progressStatusEnum, m.completionDate = now() where m.id = :userMissionId")
     Integer completeMission(Integer userMissionId, ProgressStatusEnumJPA progressStatusEnum);
 
-    @Query(value = "SELECT ump.* FROM user_mission_progress ump " +
-           "INNER JOIN users u ON ump.user_id = u.identifier " +
-           "INNER JOIN platform p ON u.platform_name = p.name " +
-           "INNER JOIN missions m ON ump.mission_id = m.identifier " +
-           "WHERE m.identifier = UNHEX(REPLACE(:missionId, '-', '')) " +
-           "AND p.name = :platformName " +
+    @Query("SELECT ump FROM UserMissionProgressJPA ump " +
+           "WHERE ump.mission.identifier = :missionId " +
+           "AND ump.user.platform.name = :platformName " +
            "AND ump.status = :status " +
-           "AND ump.start_date IS NOT NULL " +
-           "AND ump.completion_date IS NOT NULL " +
-           "ORDER BY TIMESTAMPDIFF(SECOND, ump.start_date, ump.completion_date) ASC",
-           nativeQuery = true)
+           "AND ump.startDate IS NOT NULL " +
+           "AND ump.completionDate IS NOT NULL")
     List<UserMissionProgressJPA> findByMissionIdAndPlatformOrderedByCompletionTime(
-            @Param("missionId") String missionId,
+            @Param("missionId") java.util.UUID missionId,
             @Param("platformName") String platformName,
+            @Param("status") ProgressStatusEnumJPA status);
+
+    @Query("SELECT ump FROM UserMissionProgressJPA ump " +
+           "WHERE ump.mission.identifier = :missionId " +
+           "AND ump.status = :status " +
+           "AND ump.startDate IS NOT NULL " +
+           "AND ump.completionDate IS NOT NULL")
+    List<UserMissionProgressJPA> findCompletedByMission(
+            @Param("missionId") java.util.UUID missionId,
             @Param("status") ProgressStatusEnumJPA status);
 
 }

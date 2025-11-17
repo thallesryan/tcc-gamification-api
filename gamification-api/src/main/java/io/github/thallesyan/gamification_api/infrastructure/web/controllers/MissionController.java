@@ -20,6 +20,7 @@ import io.github.thallesyan.gamification_api.infrastructure.web.mappers.MissionM
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.RuleMapper;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.RewardMapper;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserMissionMapper;
+import io.github.thallesyan.gamification_api.infrastructure.exceptions.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,13 @@ public class MissionController {
         return new ResponseEntity<>(missionMapper.toMissionResponseDTO(createdMission), HttpStatus.CREATED);
     }
 
-
+    @GetMapping("{id}")
+    public ResponseEntity<MissionResponseDTO> findMissionById(@PathVariable UUID id) {
+        var mission = missionApplication.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Mission", id));
+        
+        return new ResponseEntity<>(missionMapper.toMissionResponseDTO(mission), HttpStatus.OK);
+    }
 
     //todo make endpoint to get mission progress and goals related
 

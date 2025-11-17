@@ -4,8 +4,12 @@ import io.github.thallesyan.gamification_api.domain.entities.foundation.Mission;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Platform;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.MissionCreationRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.MissionResponseDTO;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+
+import java.time.Duration;
 
 @Mapper(componentModel = "spring", uses = {GoalMapper.class, RuleMapper.class, RewardMapper.class, BadgeMapper.class})
 public interface MissionMapper {
@@ -30,5 +34,18 @@ public interface MissionMapper {
     @Mapping(target = "description", source = "description")
     @Mapping(target = "difficultyLevel", ignore = true)
     @Mapping(target = "points", source = "points")
+    @Mapping(target = "estimatedDuration", ignore = true)
     MissionResponseDTO toMissionResponseDTO(Mission mission);
+
+    @AfterMapping
+    default void mapEstimatedDuration(@MappingTarget MissionResponseDTO dto, Mission mission) {
+        if (mission.getEstimatedDuration() != null) {
+            Duration duration = mission.getEstimatedDuration();
+            long days = duration.toDays();
+            long hours = duration.toHoursPart();
+            long minutes = duration.toMinutesPart();
+            long seconds = duration.toSecondsPart();
+            dto.setEstimatedDuration(String.format("Days: %d, hours: %d, minutes: %d, seconds: %d", days, hours, minutes, seconds));
+        }
+    }
 }

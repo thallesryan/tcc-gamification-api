@@ -1,5 +1,6 @@
 package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 
+import io.github.thallesyan.gamification_api.application.dtos.CompletionTimeDTO;
 import io.github.thallesyan.gamification_api.application.usecases.RankingApplication;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserProgress;
@@ -49,7 +50,7 @@ public class RankingController {
         
         List<UserMissionProgress> missionProgressList = rankingApplication
                 .getMissionRankingByMissionIdAndPlatform(missionId, platform);
-        
+
         List<MissionRankingEntryResponseDTO> ranking = buildMissionRankingResponse(missionProgressList);
         
         return new ResponseEntity<>(ranking, HttpStatus.OK);
@@ -85,12 +86,7 @@ public class RankingController {
                     UserMissionProgress ump = missionProgressList.get(index);
                     LocalDateTime startedAt = ump.getStartDate();
                     LocalDateTime completedAt = ump.getCompletionDate();
-                    Long completionTimeInSeconds = null;
-                    
-                    if (startedAt != null && completedAt != null) {
-                        completionTimeInSeconds = Duration.between(startedAt, completedAt).getSeconds();
-                    }
-                    
+
                     return new MissionRankingEntryResponseDTO(
                             index + 1,
                             ump.getUser().getIdentifier(),
@@ -98,10 +94,30 @@ public class RankingController {
                             ump.getUser().getEmail(),
                             startedAt,
                             completedAt,
-                            completionTimeInSeconds
+                            calculateCompletionTime(ump)
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    public String calculateCompletionTime(UserMissionProgress userMissionProgress) {
+        if (userMissionProgress == null ||
+                userMissionProgress.getStartDate() == null ||
+                userMissionProgress.getCompletionDate() == null) {
+            return null;
+        }
+
+        Duration duration = Duration.between(
+                userMissionProgress.getStartDate(),
+                userMissionProgress.getCompletionDate()
+        );
+
+        long days = duration.toDays();
+        long hours = duration.toHoursPart();
+        long minutes = duration.toMinutesPart();
+        long seconds = duration.toSecondsPart();
+
+        return String.format("Days: %d, hours: %d, minutes: %d, seconds: %d", days, hours, minutes, seconds);
     }
 }
 

@@ -27,8 +27,8 @@ public class MissionJPA extends BaseInformationJPA {
     @Column(name = "difficulty_level")
     private Integer difficultyLevel = 1;
     
-    @Column(name = "estimated_duration_hours")
-    private Integer estimatedDurationHours;
+    @Column(name = "estimated_duration")
+    private String estimatedDuration;
     
     @Column(name = "points")
     private Integer points;
