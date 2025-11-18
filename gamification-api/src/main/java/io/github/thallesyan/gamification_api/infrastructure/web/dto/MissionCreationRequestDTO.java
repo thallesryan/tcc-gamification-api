@@ -22,8 +22,8 @@ public class MissionCreationRequestDTO {
     private Integer points;
     @NotEmpty
     private List<GoalDTO> goals;
-    //@Valid
-    //private RuleDTO rule;
+    @Valid
+    private RuleDTO rule;
     @Valid
     private RewardAssociationRequestDTO reward;
 }

@@ -35,9 +35,10 @@ public class MissionJPA extends BaseInformationJPA {
     
     @OneToMany(mappedBy = "mission", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<GoalJPA> goals = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "mission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<RuleJPA> rules = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL   )
+    @JoinColumn(name = "rule_id")
+    private RuleJPA rule;
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "reward_id")

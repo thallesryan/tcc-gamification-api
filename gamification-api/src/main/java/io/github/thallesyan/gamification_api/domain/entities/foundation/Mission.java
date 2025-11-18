@@ -18,7 +18,7 @@ public class Mission extends BaseInformation {
     private Duration estimatedDuration;
     private Integer points;
     private List<Goal> goals;
-    private List<Rule> rules;
+    private Rule rule;
     private Reward reward;
 
     public Mission(String title, String description, List<Goal> goals) {

@@ -26,7 +26,6 @@ public class BadgeController {
 
     private final BadgeApplication badgeApplication;
     private final BadgeMapper badgeMapper;
-    private final RarityApplication rarityApplication;
 
     @PostMapping("/create")
     public ResponseEntity<BadgeResponseDTO> createBadge(

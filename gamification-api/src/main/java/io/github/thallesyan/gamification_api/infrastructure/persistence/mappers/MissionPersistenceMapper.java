@@ -12,7 +12,7 @@ import java.time.Duration;
 public interface MissionPersistenceMapper {
 
     @Mapping(target = "goals", source = "goals")
-    @Mapping(target = "rules", source = "rules")
+    @Mapping(target = "rule", source = "rule")
     @Mapping(target = "reward", source = "reward")
     @Mapping(target = "difficultyLevel", ignore = true)
     @Mapping(target = "estimatedDuration", source = "estimatedDuration")
@@ -26,7 +26,7 @@ public interface MissionPersistenceMapper {
     MissionJPA toMissionJPA(Mission mission);
 
     @Mapping(target = "goals", source = "goals")
-    @Mapping(target = "rules", source = "rules")
+    @Mapping(target = "rule", source = "rule")
     @Mapping(target = "reward", source = "reward")
     @Mapping(target = "points", source = "points")
     @Mapping(target = "identifier", source = "identifier")

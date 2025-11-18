@@ -14,11 +14,11 @@ import lombok.AllArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class UserRewardJPA extends BaseEntityJPA {
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private UserJPA user;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "reward_id", nullable = false)
     private RewardJPA reward;
     
