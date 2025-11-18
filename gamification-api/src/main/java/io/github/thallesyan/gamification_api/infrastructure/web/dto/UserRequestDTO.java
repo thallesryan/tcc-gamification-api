@@ -14,6 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserRequestDTO {
     @NotNull
+    @NotNull
     private String name;
     @Email
     private String email;

@@ -5,6 +5,7 @@ import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissio
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserProgress;
 import io.github.thallesyan.gamification_api.domain.services.*;
+import io.github.thallesyan.gamification_api.infrastructure.exceptions.CurrentGoalNotFoundException;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -91,7 +92,7 @@ public class UserMissionApplication {
 
         var currentGoal = userMission
                 .getCurrentGoal()
-                .orElseThrow(() -> new RuntimeException("Current goal not found"));
+                .orElseThrow(CurrentGoalNotFoundException::new);
 
         var nextGoal = userMission
                 .getNextGoal();

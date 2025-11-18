@@ -34,7 +34,7 @@ public class UserJPA extends BaseEntityJPA {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "platform_name")
     private PlatformJPA platform;
 

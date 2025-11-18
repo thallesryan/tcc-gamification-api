@@ -18,20 +18,21 @@ public class UserApplication {
     private final FindUserByEmail findUserByEmail;
     private final CreateUserProgress createUserProgress;
     private final FindUserProgress findUserProgress;
+    private final PlatformApplication platformApplication;
 
-
-    public UserApplication(RegisterUser registerUser, FindUserByEmail findUserByEmail, CreateUserProgress createUserProgress, FindUserProgress findUserProgress) {
+    public UserApplication(RegisterUser registerUser, FindUserByEmail findUserByEmail, CreateUserProgress createUserProgress, FindUserProgress findUserProgress, PlatformApplication platformApplication) {
         this.registerUser = registerUser;
         this.findUserByEmail = findUserByEmail;
         this.createUserProgress = createUserProgress;
         this.findUserProgress = findUserProgress;
+        this.platformApplication = platformApplication;
     }
 
     public User registerUser(User user) {
+        platformApplication.findByName(user.getPlatform().getName());
         User registeredUser = registerUser.registerUser(user);
         UserProgress userProgress = new UserProgress(registeredUser);
         createUserProgress.createUserProgress(userProgress);
-        
         return registeredUser;
     }
 

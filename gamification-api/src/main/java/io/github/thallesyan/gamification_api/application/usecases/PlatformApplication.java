@@ -2,6 +2,7 @@ package io.github.thallesyan.gamification_api.application.usecases;
 
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Platform;
 import io.github.thallesyan.gamification_api.domain.services.CreatePlatform;
+import io.github.thallesyan.gamification_api.infrastructure.exceptions.PlatformNotFoundException;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.PlatformJpaPersistence;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.mappers.PlatformPersistenceMapper;
 import org.springframework.stereotype.Component;
@@ -27,8 +28,9 @@ public class PlatformApplication {
         return createPlatform.createPlatform(platform);
     }
 
-    public Optional<Platform> findByName(String name) {
+    public Platform findByName(String name) {
         return platformJpaPersistence.findById(name)
-                .map(platformPersistenceMapper::toModel);
+                .map(platformPersistenceMapper::toModel)
+                .orElseThrow(() -> new PlatformNotFoundException(name));
     }
 }

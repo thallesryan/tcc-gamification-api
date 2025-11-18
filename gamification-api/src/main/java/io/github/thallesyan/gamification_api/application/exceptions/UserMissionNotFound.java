@@ -1,12 +1,13 @@
 package io.github.thallesyan.gamification_api.application.exceptions;
 
-import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
+import io.github.thallesyan.gamification_api.infrastructure.exceptions.BaseException;
+import org.springframework.http.HttpStatus;
 
-public class UserMissionNotFound extends RuntimeException{
+public class UserMissionNotFound extends BaseException {
     private static final String MISSION_READY_TO_START_NOT_FOUND = "User with %s %s does not has mission with id %s ready to start";
 
     private UserMissionNotFound(String message) {
-        super(message);
+        super(message, "USER_MISSION_NOT_FOUND", HttpStatus.NOT_FOUND);
     }
 
     public static UserMissionNotFound missionToStartNotFound(String identifier, String missionIdentifier) {

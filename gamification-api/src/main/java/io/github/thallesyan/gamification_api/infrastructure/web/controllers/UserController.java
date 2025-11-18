@@ -8,8 +8,6 @@ import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.Lev
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserMapper;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserProgressMapper;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
-import io.github.thallesyan.gamification_api.domain.services.FindUserByEmail;
-import io.github.thallesyan.gamification_api.domain.services.RegisterUser;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.UserRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.UserResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.UserProgressResponseDTO;
@@ -17,8 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user/")
@@ -67,8 +63,7 @@ public class UserController {
             @PathVariable Integer levelNumber,
             @RequestHeader("platform") String platform) {
         
-        var platformEntity = platformApplication.findByName(platform)
-                .orElseThrow(() -> new EntityNotFoundException("Platform", "name", platform));
+        var platformEntity = platformApplication.findByName(platform);
         
         if (platformEntity.getProgressBasePoints() == null || platformEntity.getProgressFormula() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
