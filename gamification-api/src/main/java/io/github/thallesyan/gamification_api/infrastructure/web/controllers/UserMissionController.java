@@ -2,6 +2,7 @@ package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 
 import io.github.thallesyan.gamification_api.application.exceptions.UserMissionNotFound;
 import io.github.thallesyan.gamification_api.application.usecases.UserMissionApplication;
+import io.github.thallesyan.gamification_api.infrastructure.exceptions.InvalidUuidException;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.BindUserMissionRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.MissionBinding;
@@ -35,7 +36,8 @@ public class UserMissionController {
     @PostMapping("bind-missions")
     public ResponseEntity<MissionResponseDTO> bindMissionsToUser(@RequestBody BindUserMissionRequestDTO bindUserMissionRequestDTO) {
         var missions = bindUserMissionRequestDTO.getMissions();
-        var missionsIds = missions.stream().map(MissionBinding::getIdentifier).map(UUID::fromString).collect(Collectors.toList());
+
+        var missionsIds = missions.stream().map(MissionBinding::getIdentifier).map(this::stringToUUID).collect(Collectors.toList());
         userMissionApplication.associateUserMission(bindUserMissionRequestDTO.getUserEmail(), bindUserMissionRequestDTO.getPlatform(), missionsIds);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -86,12 +88,10 @@ public class UserMissionController {
             @PathVariable("userEmail") String userEmail,
             @RequestHeader("platform") String platform
     ) {
-        try{
-            var userMission = userMissionApplication.resolveGoalInProgress(userEmail, platform, missionId);
-            return new ResponseEntity<>(userMissionMapper.toStartMissionResponseDTO(userMission), HttpStatus.OK);
-        }catch (UserMissionNotFound ex){
-            return new  ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+
+        var userMission = userMissionApplication.resolveGoalInProgress(userEmail, platform, missionId);
+        return new ResponseEntity<>(userMissionMapper.toStartMissionResponseDTO(userMission), HttpStatus.OK);
+
     }
 
     @GetMapping("{userEmail}/status/{missionStatus}")
@@ -104,5 +104,14 @@ public class UserMissionController {
         if(missions.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         var missionProgressResponse = missions.stream().map(userMissionMapper::toMissionProgressResponseDTO).toList();
         return new ResponseEntity<>(missionProgressResponse, HttpStatus.OK);
+    }
+
+    private UUID stringToUUID(String uuid){
+        try{
+            return UUID.fromString(uuid);
+        }catch (IllegalArgumentException e){
+            throw new InvalidUuidException(uuid);
+        }
+
     }
 }

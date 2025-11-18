@@ -2,6 +2,7 @@ package io.github.thallesyan.gamification_api.infrastructure.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,8 @@ public class UserRequestDTO {
     @NotNull
     private String name;
     @Email
+    @NotNull
+    @NotBlank
     private String email;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dateOfBirth;

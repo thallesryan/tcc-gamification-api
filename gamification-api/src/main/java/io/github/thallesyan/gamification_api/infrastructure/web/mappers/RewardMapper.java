@@ -20,6 +20,13 @@ public interface RewardMapper {
     @Mapping(target = "badge.identifier", source = "rewardCreationRequestDTO.badge.identifier")
     Reward toReward(RewardCreationRequestDTO rewardCreationRequestDTO, String platform);
 
+    @Mapping(target = "identifier", source = "rewardCreationRequestDTO.identifier")
+    @Mapping(target = "name", source = "rewardCreationRequestDTO.name")
+    @Mapping(target = "description", source = "rewardCreationRequestDTO.description")
+    @Mapping(target = "points", source = "rewardCreationRequestDTO.points")
+    @Mapping(target = "badge.identifier", source = "rewardCreationRequestDTO.badge.identifier")
+    Reward toReward(RewardCreationRequestDTO rewardCreationRequestDTO);
+
     @Mapping(target = "identifier", source = "identifier")
     @Mapping(target = "name", source = "name")
     @Mapping(target = "description", source = "description")

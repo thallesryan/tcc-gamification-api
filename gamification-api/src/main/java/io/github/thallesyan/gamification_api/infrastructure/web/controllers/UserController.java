@@ -3,7 +3,6 @@ package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 import io.github.thallesyan.gamification_api.application.exceptions.UserNotFoundException;
 import io.github.thallesyan.gamification_api.application.usecases.PlatformApplication;
 import io.github.thallesyan.gamification_api.application.usecases.UserApplication;
-import io.github.thallesyan.gamification_api.infrastructure.exceptions.EntityNotFoundException;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.LevelPointsResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserMapper;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserProgressMapper;

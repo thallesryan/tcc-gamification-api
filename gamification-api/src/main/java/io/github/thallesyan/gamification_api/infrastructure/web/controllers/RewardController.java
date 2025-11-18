@@ -36,7 +36,9 @@ public class RewardController {
             @RequestBody @Valid RewardCreationRequestDTO rewardCreationRequestDTO,
             @RequestHeader("platform") String platform) {
 
-        Reward reward = rewardMapper.toReward(rewardCreationRequestDTO, platform);
+
+        var reward = rewardMapper.toReward(rewardCreationRequestDTO, platform);
+
 
         var createdReward = rewardApplication.createReward(reward);
         return new ResponseEntity<>(rewardMapper.toRewardResponseDTO(createdReward), HttpStatus.CREATED);

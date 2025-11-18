@@ -1,5 +1,6 @@
 package io.github.thallesyan.gamification_api.application.usecases;
 
+import io.github.thallesyan.gamification_api.application.exceptions.AssociateMissionsException;
 import io.github.thallesyan.gamification_api.application.exceptions.UserNotFoundException;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionGoalProgress;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
@@ -44,16 +45,18 @@ public class UserMissionApplication {
     }
 
     //todo Criar retornos diferentes para caso todas missoes tenham sido associadas e quando so algumas estivetem. Ex em casos de missoes nao encontradas pelos ids
-    //todo criar handler para excecoes, quando n achar missionId etc
     public void associateUserMission(String userEmail, String platform, List<UUID> missionsIds) {
-        var userOpt = findUserByEmail.byEmail(userEmail, platform);
-        if(userOpt.isEmpty()){
-            throw new UserNotFoundException("User does not exist");
+        var user = findUserByEmail.byEmail(userEmail, platform).orElseThrow(UserNotFoundException::new);
+        var missionsSearch = findMission.byMissionsIds(missionsIds);
+
+        if(!missionsSearch.getMissionsFound().isEmpty()){
+            var missionsFound = missionsSearch.getMissionsFound();
+            bindUserMissions.bindMissions(user, missionsFound);
         }
 
-        var missionsSearch = findMission.byMissionsIds(missionsIds);
-        var missionsFound = missionsSearch.getMissionsFound();
-        bindUserMissions.bindMissions(userOpt.get(), missionsFound);
+        if (!missionsSearch.getMissionsNotFound().isEmpty()){
+            throw new AssociateMissionsException(missionsSearch);
+        }
     }
 
     //todo quando for utilizado email, terá que passar platform também

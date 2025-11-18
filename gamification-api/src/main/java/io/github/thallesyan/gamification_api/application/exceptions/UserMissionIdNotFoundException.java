@@ -1,5 +1,6 @@
-package io.github.thallesyan.gamification_api.infrastructure.exceptions;
+package io.github.thallesyan.gamification_api.application.exceptions;
 
+import io.github.thallesyan.gamification_api.infrastructure.exceptions.BaseException;
 import org.springframework.http.HttpStatus;
 
 public class UserMissionIdNotFoundException extends BaseException {

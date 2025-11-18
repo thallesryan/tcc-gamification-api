@@ -3,7 +3,7 @@ package io.github.thallesyan.gamification_api.domain.services.impl;
 import io.github.thallesyan.gamification_api.domain.boundary.FindUserMissionBoundary;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.services.FindUserMissionById;
-import io.github.thallesyan.gamification_api.infrastructure.exceptions.UserMissionIdNotFoundException;
+import io.github.thallesyan.gamification_api.application.exceptions.UserMissionIdNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -9,11 +9,12 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {RarityMapper.class})
 public interface BadgeMapper {
 
-    @Mapping(target = "identifier", source = "identifier")
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "description", source = "description")
-    @Mapping(target = "rarity.value", source = "rarity")
-    Badge toBadge(BadgeCreationRequestDTO dto);
+    @Mapping(target = "identifier", source = "dto.identifier")
+    @Mapping(target = "name", source = "dto.name")
+    @Mapping(target = "description", source = "dto.description")
+    @Mapping(target = "rarity.value", source = "dto.rarity")
+    @Mapping(target = "rarity.platform.name", source = "platform")
+    Badge toBadge(BadgeCreationRequestDTO dto, String platform);
 
     @Mapping(target = "identifier", source = "identifier")
     @Mapping(target = "name", source = "name")

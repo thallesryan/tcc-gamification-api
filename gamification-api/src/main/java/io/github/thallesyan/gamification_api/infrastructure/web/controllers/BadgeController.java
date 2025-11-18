@@ -32,20 +32,9 @@ public class BadgeController {
     public ResponseEntity<BadgeResponseDTO> createBadge(
             @RequestBody @Valid BadgeCreationRequestDTO badgeCreationRequestDTO,
             @RequestHeader("platform") String platform) {
-        
-        Platform platformEntity = new Platform(platform);
 
-        Optional<Rarity> rarityOpt = rarityApplication.getAllRaritiesByPlatform(platformEntity).stream()
-                .filter(r -> r.getValue() == badgeCreationRequestDTO.getRarity())
-                .findFirst();
-        
-        if (rarityOpt.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        
-        Badge badge = badgeMapper.toBadge(badgeCreationRequestDTO);
-        badge.setRarity(rarityOpt.get());
-        
+        Badge badge = badgeMapper.toBadge(badgeCreationRequestDTO, platform);
+
         var createdBadge = badgeApplication.createBadge(badge);
         return new ResponseEntity<>(badgeMapper.toBadgeResponseDTO(createdBadge), HttpStatus.CREATED);
     }
