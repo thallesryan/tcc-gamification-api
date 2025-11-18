@@ -1,7 +1,10 @@
 package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 
 import io.github.thallesyan.gamification_api.application.exceptions.UserNotFoundException;
+import io.github.thallesyan.gamification_api.application.usecases.PlatformApplication;
 import io.github.thallesyan.gamification_api.application.usecases.UserApplication;
+import io.github.thallesyan.gamification_api.infrastructure.exceptions.EntityNotFoundException;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.LevelPointsResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserMapper;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserProgressMapper;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
@@ -25,6 +28,7 @@ public class UserController {
     private final UserApplication userApplication;
     private final UserMapper userMapper;
     private final UserProgressMapper userProgressMapper;
+    private final PlatformApplication platformApplication;
 
     @PostMapping("register")
     public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequestDTO userRequestDTO) {
@@ -56,5 +60,23 @@ public class UserController {
         } catch (UserNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+    }
+
+    @GetMapping("progress/level/{levelNumber}/points")
+    public ResponseEntity<LevelPointsResponseDTO> getLevelPoints(
+            @PathVariable Integer levelNumber,
+            @RequestHeader("platform") String platform) {
+        
+        var platformEntity = platformApplication.findByName(platform)
+                .orElseThrow(() -> new EntityNotFoundException("Platform", "name", platform));
+        
+        if (platformEntity.getProgressBasePoints() == null || platformEntity.getProgressFormula() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        Integer pointsRequired = platformEntity.calculateLevelPoints(levelNumber);
+        
+        var response = new LevelPointsResponseDTO(levelNumber, pointsRequired, platform);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

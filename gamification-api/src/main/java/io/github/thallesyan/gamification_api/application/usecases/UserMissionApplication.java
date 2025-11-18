@@ -3,6 +3,7 @@ package io.github.thallesyan.gamification_api.application.usecases;
 import io.github.thallesyan.gamification_api.application.exceptions.UserNotFoundException;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionGoalProgress;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
+import io.github.thallesyan.gamification_api.domain.entities.progress.UserProgress;
 import io.github.thallesyan.gamification_api.domain.services.*;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -101,8 +102,8 @@ public class UserMissionApplication {
         nextGoal.ifPresentOrElse(
                 next -> updateUserMission.startGoal(updatedMission, next),
                 () -> {
-                    var completedMission = updateUserMission.completeMission(updatedMission);
-                    addPointsToUserProgress(updatedMission);
+                    updateUserMission.completeMission(updatedMission);
+                    var userProgressWithPoints = addPointsToUserProgress(updatedMission);
                     updateMissionEstimatedDuration.recalculate(userMission.getMission().getIdentifier());
                 }
         );
@@ -118,13 +119,23 @@ public class UserMissionApplication {
         });
     }
 
-    private void addPointsToUserProgress(UserMissionProgress userMissionProgress) {
+    private UserProgress addPointsToUserProgress(UserMissionProgress userMissionProgress) {
         var mission = userMissionProgress.getMission();
         var user = userMissionProgress.getUser();
-        findUserProgress.findByUser(user).ifPresent(userProgress -> {
-            userProgress.addMissionPoints(mission.getPoints());
-            userProgress.addMissionPoints();
-            updateUserProgress.updateUserProgress(userProgress);
-        });
+        var userProgress = findUserProgress.findByUser(user).orElseThrow(UserNotFoundException::new);
+        verifyLevelUpAndAddPoints(userProgress, mission.getPoints());
+        userProgress.addMissionCompleted();
+        return updateUserProgress.updateUserProgress(userProgress);
+    }
+
+    public void verifyLevelUpAndAddPoints(UserProgress userProgress, Integer points){
+        Integer pointsToAdd = points;
+        if(userProgress.isUserLevelUpping(points)){
+            pointsToAdd = userProgress.getSurplusPointsLevelUp(points);
+            userProgress.redefineTotalPoints();
+            userProgress.increaseLevel();
+
+        }
+        userProgress.addMissionPoints(pointsToAdd);
     }
 }

@@ -50,4 +50,6 @@ public class UserMissionProgress extends BaseProgress{
     public Long getCountGoalsCompleted() {
         return userGoalsProgress.stream().filter(progress -> progress.getStatus() == ProgressStatusEnum.COMPLETED).count();
     }
+
+
 }

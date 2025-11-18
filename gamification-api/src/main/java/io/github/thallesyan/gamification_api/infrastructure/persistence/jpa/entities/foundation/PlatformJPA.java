@@ -18,4 +18,10 @@ import lombok.NoArgsConstructor;
 public class PlatformJPA{
     @Id
     private String name;
+    private Integer progressBasePoints;
+    private Double progressFormula;
+
+    public PlatformJPA(String name) {
+        this.name = name;
+    }
 }

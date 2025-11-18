@@ -28,7 +28,7 @@ public class UserProgress {
         this.goalsCompleted = 0;
     }
 
-    public void addMissionPoints(){
+    public void addMissionCompleted(){
         missionsCompleted++;
     }
 
@@ -39,6 +39,25 @@ public class UserProgress {
 
     public void addGoalCompleted(){
         goalsCompleted++;
+    }
+
+    public boolean isUserLevelUpping(Integer points){
+        var levelUpAchievePoints = user.getPlatform().calculateLevelPoints(currentLevel + 1);
+        return totalPoints + points >= levelUpAchievePoints;
+    }
+
+    public Integer getSurplusPointsLevelUp(Integer points){
+        var levelUpAchievePoints = user.getPlatform().calculateLevelPoints(currentLevel + 1);
+        return (totalPoints + points) - levelUpAchievePoints;
+    }
+
+
+    public void redefineTotalPoints(){
+        this.totalPoints = 0;
+    }
+
+    public void increaseLevel(){
+        currentLevel++;
     }
 }
 

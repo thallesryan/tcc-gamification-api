@@ -9,4 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class PlatformCreationResponseDTO {
     private String name;
+    private Integer progressBasePoints;
+    private Double progressFormula;
 }

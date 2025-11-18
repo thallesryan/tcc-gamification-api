@@ -11,4 +11,23 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Platform {
     private String name;
+    private Integer progressBasePoints;
+    private Double progressFormula;
+    
+    public Platform(String name) {
+        this.name = name;
+        this.progressBasePoints = null;
+        this.progressFormula = null;
+    }
+
+    public Integer calculateLevelPoints(int level){
+        if(level == 1) return progressBasePoints;
+        Double points = Double.valueOf(progressBasePoints);
+
+        for(int i = level-1; i > 0; i--){
+            points *= (1 + progressFormula);
+        }
+
+        return points.intValue();
+    }
 }
