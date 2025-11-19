@@ -29,8 +29,10 @@ public class UserMissionApplication {
     private final FindUserProgress findUserProgress;
     private final UpdateUserProgress updateUserProgress;
     private final UpdateMissionEstimatedDuration updateMissionEstimatedDuration;
+    private final AssignRewardToUser assignRewardToUser;
+    private final UserProgressPoints userProgressPoints;
 
-    public UserMissionApplication(FindMission findMission, FindUserByEmail findUserByEmail, BindUserMissions bindUserMissions, @Qualifier("findUserMissionByUserIdentifierImpl") FindUserMission findUserMissionByIdentifier, @Qualifier("findUserMissionByUserEmailImpl") FindUserMission findUserMissionByEmail, FindUserMissionById findUserMissionById, UpdateUserMission updateUserMission, FindUserProgressMissionsByStatusAndPlatform findUserProgressMissionsByStatusAndPlatform, FindUserProgress findUserProgress, UpdateUserProgress updateUserProgress, UpdateMissionEstimatedDuration updateMissionEstimatedDuration) {
+    public UserMissionApplication(FindMission findMission, FindUserByEmail findUserByEmail, BindUserMissions bindUserMissions, @Qualifier("findUserMissionByUserIdentifierImpl") FindUserMission findUserMissionByIdentifier, @Qualifier("findUserMissionByUserEmailImpl") FindUserMission findUserMissionByEmail, FindUserMissionById findUserMissionById, UpdateUserMission updateUserMission, FindUserProgressMissionsByStatusAndPlatform findUserProgressMissionsByStatusAndPlatform, FindUserProgress findUserProgress, UpdateUserProgress updateUserProgress, UpdateMissionEstimatedDuration updateMissionEstimatedDuration, AssignRewardToUser assignRewardToUser, UserProgressPoints userProgressPoints) {
         this.findMission = findMission;
         this.findUserByEmail = findUserByEmail;
         this.bindUserMissions = bindUserMissions;
@@ -42,6 +44,8 @@ public class UserMissionApplication {
         this.findUserProgress = findUserProgress;
         this.updateUserProgress = updateUserProgress;
         this.updateMissionEstimatedDuration = updateMissionEstimatedDuration;
+        this.assignRewardToUser = assignRewardToUser;
+        this.userProgressPoints = userProgressPoints;
     }
 
     //todo Criar retornos diferentes para caso todas missoes tenham sido associadas e quando so algumas estivetem. Ex em casos de missoes nao encontradas pelos ids
@@ -107,8 +111,9 @@ public class UserMissionApplication {
                 next -> updateUserMission.startGoal(updatedMission, next),
                 () -> {
                     updateUserMission.completeMission(updatedMission);
-                    var userProgressWithPoints = addPointsToUserProgress(updatedMission);
+                    addPointsToUserProgress(updatedMission);
                     updateMissionEstimatedDuration.recalculate(userMission.getMission().getIdentifier());
+                    userReward(updatedMission);
                 }
         );
 
@@ -124,22 +129,10 @@ public class UserMissionApplication {
     }
 
     private UserProgress addPointsToUserProgress(UserMissionProgress userMissionProgress) {
-        var mission = userMissionProgress.getMission();
-        var user = userMissionProgress.getUser();
-        var userProgress = findUserProgress.findByUser(user).orElseThrow(UserNotFoundException::new);
-        verifyLevelUpAndAddPoints(userProgress, mission.getPoints());
-        userProgress.addMissionCompleted();
-        return updateUserProgress.updateUserProgress(userProgress);
+        return userProgressPoints.addMissionPoints(userMissionProgress);
     }
 
-    public void verifyLevelUpAndAddPoints(UserProgress userProgress, Integer points){
-        Integer pointsToAdd = points;
-        if(userProgress.isUserLevelUpping(points)){
-            pointsToAdd = userProgress.getSurplusPointsLevelUp(points);
-            userProgress.redefineTotalPoints();
-            userProgress.increaseLevel();
-
-        }
-        userProgress.addMissionPoints(pointsToAdd);
+    private void userReward(UserMissionProgress userMissionProgress){
+        assignRewardToUser.assignReward(userMissionProgress.getId());
     }
 }
