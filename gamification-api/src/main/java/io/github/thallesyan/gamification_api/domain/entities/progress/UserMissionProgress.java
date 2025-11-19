@@ -46,6 +46,7 @@ public class UserMissionProgress extends BaseProgress{
 
     public Optional<UserMissionGoalProgress> getLastGoal() {
         var listCount = userGoalsProgress.size();
+        if (listCount == 0) return Optional.empty();
         return userGoalsProgress.stream().skip(listCount - 1).findFirst();
     }
 
