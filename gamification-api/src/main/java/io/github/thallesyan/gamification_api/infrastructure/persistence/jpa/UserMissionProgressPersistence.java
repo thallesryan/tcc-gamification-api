@@ -18,6 +18,8 @@ import java.util.Optional;
 public interface UserMissionProgressPersistence extends JpaRepository<UserMissionProgressJPA, Integer> {
 
     Optional<UserMissionProgressJPA> findByUserAndMissionAndStatus(UserJPA user, MissionJPA mission, ProgressStatusEnumJPA progressStatusEnum);
+    
+    Optional<UserMissionProgressJPA> findByUserAndMission(UserJPA user, MissionJPA mission);
 
     @Transactional
     @Modifying

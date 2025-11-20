@@ -2,6 +2,7 @@ package io.github.thallesyan.gamification_api.application.usecases;
 
 import io.github.thallesyan.gamification_api.application.exceptions.AssociateMissionsException;
 import io.github.thallesyan.gamification_api.application.exceptions.UserNotFoundException;
+import io.github.thallesyan.gamification_api.domain.entities.foundation.Mission;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionGoalProgress;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserProgress;
@@ -10,10 +11,9 @@ import io.github.thallesyan.gamification_api.infrastructure.exceptions.CurrentGo
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class UserMissionApplication {
@@ -52,14 +52,15 @@ public class UserMissionApplication {
     public void associateUserMission(String userEmail, String platform, List<UUID> missionsIds) {
         var user = findUserByEmail.byEmail(userEmail, platform).orElseThrow(UserNotFoundException::new);
         var missionsSearch = findMission.byMissionsIds(missionsIds);
+        List<Mission> missionsAlreadyExisted = new ArrayList<>();
 
         if(!missionsSearch.getMissionsFound().isEmpty()){
             var missionsFound = missionsSearch.getMissionsFound();
-            bindUserMissions.bindMissions(user, missionsFound);
+            missionsAlreadyExisted = bindUserMissions.bindMissions(user, missionsFound);
         }
 
-        if (!missionsSearch.getMissionsNotFound().isEmpty()){
-            throw new AssociateMissionsException(missionsSearch);
+        if (!CollectionUtils.isEmpty(missionsSearch.getMissionsNotFound()) || !CollectionUtils.isEmpty(missionsAlreadyExisted)){
+            throw new AssociateMissionsException(missionsSearch, missionsAlreadyExisted);
         }
     }
 

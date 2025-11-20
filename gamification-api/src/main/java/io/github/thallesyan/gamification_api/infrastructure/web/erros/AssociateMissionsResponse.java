@@ -11,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AssociateMissionsResponse {
-    private List<UUID> missionsAssociatedWithSuccess;
+    private List<UUID> missionsBondWithSuccess;
     private List<UUID> missionsNotFound;
+    private List<UUID> missionsAlreadyBondToUser;
 }

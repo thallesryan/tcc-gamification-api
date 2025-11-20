@@ -21,7 +21,8 @@ public class GenericExceptionHandler extends ResponseEntityExceptionHandler {
 
         if(ex instanceof AssociateMissionsException associateMissionsException){
             var idsMissionsFound = associateMissionsException.getMissionsSearch().getMissionsFound().stream().map(Mission::getIdentifier).toList();
-            return new ResponseEntity<>(new AssociateMissionsResponse(idsMissionsFound, associateMissionsException.getMissionsSearch().getMissionsNotFound()), ex.getHttpStatus());
+            var idsMissionsAlreadyBondUser = associateMissionsException.getMissionsAlreadyExisted().stream().map(Mission::getIdentifier).toList();
+            return new ResponseEntity<>(new AssociateMissionsResponse(idsMissionsFound, associateMissionsException.getMissionsSearch().getMissionsNotFound(), idsMissionsAlreadyBondUser), ex.getHttpStatus());
         }
 
         return new ResponseEntity<>(new ErrorResponse(ex.getMessage()), ex.getHttpStatus());

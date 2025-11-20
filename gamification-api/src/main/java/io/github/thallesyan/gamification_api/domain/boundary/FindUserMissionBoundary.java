@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface FindUserMissionBoundary {
     Optional<UserMissionProgress> byUserIdentifierAndMissionAndStatus(User user, Mission mission, ProgressStatusEnum progressStatusEnum);
+    Optional<UserMissionProgress> byUserAndMission(User user, Mission mission);
     List<UserMissionProgress> byUserAndStatus(User user, ProgressStatusEnum progressStatusEnum);
     Optional<UserMissionProgress> byId(Integer id);
 }
