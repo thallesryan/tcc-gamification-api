@@ -8,6 +8,13 @@ import io.github.thallesyan.gamification_api.infrastructure.web.dto.enums.Rankin
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.MissionRankingEntryResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.RankingEntryResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.RankingMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +30,21 @@ import java.util.stream.IntStream;
 @RestController
 @RequestMapping("/api/ranking")
 @AllArgsConstructor
+@Tag(name = "Ranking", description = "Endpoints para consulta de rankings")
 public class RankingController {
 
     private final RankingApplication rankingApplication;
 
+    @Operation(summary = "Obter ranking geral", description = "Retorna o ranking geral de usuários por pontos, goals ou missões completadas")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ranking obtido com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Parâmetros inválidos")
+    })
     @GetMapping()
     public ResponseEntity<List<RankingEntryResponseDTO>> getRanking(
+            @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform,
+            @Parameter(description = "Critério de ranking (POINTS, GOALS_COMPLETED, MISSION_COMPLETED)", required = true)
             @RequestHeader("rankingBy") String rankingBy) {
         
         RankingByEnum rankingByEnum = RankingByEnum.fromString(rankingBy);
@@ -43,9 +58,16 @@ public class RankingController {
         return new ResponseEntity<>(ranking, HttpStatus.OK);
     }
 
+    @Operation(summary = "Obter ranking de missão", description = "Retorna o ranking de uma missão específica ordenado por tempo de conclusão")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ranking da missão obtido com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Parâmetros inválidos")
+    })
     @GetMapping("/mission/{missionId}")
     public ResponseEntity<List<MissionRankingEntryResponseDTO>> getMissionRanking(
+            @Parameter(description = "ID da missão", required = true)
             @PathVariable UUID missionId,
+            @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
         
         List<UserMissionProgress> missionProgressList = rankingApplication
