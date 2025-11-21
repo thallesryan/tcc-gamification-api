@@ -10,6 +10,13 @@ import io.github.thallesyan.gamification_api.domain.entities.reward.Rarity;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.RewardCreationRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.RewardResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.RewardMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +31,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/reward")
 @AllArgsConstructor
+@Tag(name = "Reward", description = "Endpoints para gerenciamento de recompensas")
 public class RewardController {
 
     private final RewardApplication rewardApplication;
@@ -31,9 +39,16 @@ public class RewardController {
     private final BadgeApplication badgeApplication;
     private final RarityApplication rarityApplication;
 
+    @Operation(summary = "Criar recompensa", description = "Cria uma nova recompensa no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Recompensa criada com sucesso",
+                    content = @Content(schema = @Schema(implementation = RewardResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    })
     @PostMapping("/create")
     public ResponseEntity<RewardResponseDTO> createReward(
             @RequestBody @Valid RewardCreationRequestDTO rewardCreationRequestDTO,
+            @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
 
 
@@ -44,6 +59,11 @@ public class RewardController {
         return new ResponseEntity<>(rewardMapper.toRewardResponseDTO(createdReward), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Listar todas as recompensas", description = "Retorna todas as recompensas do sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recompensas encontradas"),
+            @ApiResponse(responseCode = "204", description = "Nenhuma recompensa encontrada")
+    })
     @GetMapping()
     public ResponseEntity<List<RewardResponseDTO>> getAllRewards() {
         var rewards = rewardApplication.findAllRewards().stream()
@@ -57,8 +77,16 @@ public class RewardController {
         return new ResponseEntity<>(rewards, HttpStatus.OK);
     }
 
+    @Operation(summary = "Buscar recompensa por ID", description = "Retorna os dados de uma recompensa pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recompensa encontrada",
+                    content = @Content(schema = @Schema(implementation = RewardResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Recompensa não encontrada")
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<RewardResponseDTO> getRewardById(@PathVariable("id") UUID id) {
+    public ResponseEntity<RewardResponseDTO> getRewardById(
+            @Parameter(description = "ID da recompensa", required = true)
+            @PathVariable("id") UUID id) {
         return rewardApplication.findRewardById(id)
                 .map(reward -> new ResponseEntity<>(rewardMapper.toRewardResponseDTO(reward), HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

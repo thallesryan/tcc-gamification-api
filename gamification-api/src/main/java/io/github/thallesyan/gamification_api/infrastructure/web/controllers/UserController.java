@@ -10,6 +10,13 @@ import io.github.thallesyan.gamification_api.domain.entities.foundation.User;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.UserRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.UserResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.UserProgressResponseDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user/")
 @AllArgsConstructor
+@Tag(name = "User", description = "Endpoints para gerenciamento de usuários")
 public class UserController {
 
     private final UserApplication userApplication;
@@ -25,14 +33,30 @@ public class UserController {
     private final UserProgressMapper userProgressMapper;
     private final PlatformApplication platformApplication;
 
+    @Operation(summary = "Registrar novo usuário", description = "Cria um novo usuário no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso",
+                    content = @Content(schema = @Schema(implementation = UserResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    })
     @PostMapping("register")
     public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequestDTO userRequestDTO) {
         User registeredUser = userApplication.registerUser(userMapper.toUser(userRequestDTO));
         return new ResponseEntity<>(userMapper.toUserResponseDTO(registeredUser), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Buscar usuário por email", description = "Retorna os dados do usuário pelo email")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuário encontrado",
+                    content = @Content(schema = @Schema(implementation = UserResponseDTO.class))),
+            @ApiResponse(responseCode = "204", description = "Usuário não encontrado")
+    })
     @GetMapping("email/{email}")
-    public ResponseEntity<UserResponseDTO> getUserByEmail(@PathVariable String email, @RequestHeader("platform") String platform) {
+    public ResponseEntity<UserResponseDTO> getUserByEmail(
+            @Parameter(description = "Email do usuário", required = true)
+            @PathVariable String email,
+            @Parameter(description = "Nome da plataforma", required = true)
+            @RequestHeader("platform") String platform) {
 
         try {
             var userResponseDTO = userMapper.toUserResponseDTO(userApplication.findUserByEmail(email, platform));
@@ -42,8 +66,18 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Buscar progresso do usuário", description = "Retorna o progresso do usuário pelo email")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Progresso encontrado",
+                    content = @Content(schema = @Schema(implementation = UserProgressResponseDTO.class))),
+            @ApiResponse(responseCode = "204", description = "Progresso não encontrado")
+    })
     @GetMapping("email/{email}/progress")
-    public ResponseEntity<UserProgressResponseDTO> getUserProgressByEmail(@PathVariable String email, @RequestHeader("platform") String platform) {
+    public ResponseEntity<UserProgressResponseDTO> getUserProgressByEmail(
+            @Parameter(description = "Email do usuário", required = true)
+            @PathVariable String email,
+            @Parameter(description = "Nome da plataforma", required = true)
+            @RequestHeader("platform") String platform) {
         try {
             var userProgressOpt = userApplication.findUserProgressByEmail(email, platform);
             if (userProgressOpt.isPresent()) {
@@ -57,9 +91,17 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Calcular pontos do nível", description = "Calcula os pontos necessários para um determinado nível")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pontos calculados com sucesso",
+                    content = @Content(schema = @Schema(implementation = LevelPointsResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    })
     @GetMapping("progress/level/{levelNumber}/points")
     public ResponseEntity<LevelPointsResponseDTO> getLevelPoints(
+            @Parameter(description = "Número do nível", required = true)
             @PathVariable Integer levelNumber,
+            @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
         
         var platformEntity = platformApplication.findByName(platform);
