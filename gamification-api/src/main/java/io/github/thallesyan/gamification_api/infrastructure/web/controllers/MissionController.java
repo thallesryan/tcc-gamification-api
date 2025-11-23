@@ -64,10 +64,4 @@ public class MissionController {
         
         return new ResponseEntity<>(missionMapper.toMissionResponseDTO(mission), HttpStatus.OK);
     }
-
-    //todo make endpoint to get mission progress and goals related
-
-////////////////////////////////////////////////////////////////////
-
-    //todo busca de rewards por missao do usuario
 }

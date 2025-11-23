@@ -30,10 +30,6 @@ public class RewardJPA extends BaseEntityJPA {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
     
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "reward_type", nullable = false)
-//    private RewardType rewardType;
-    
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
     
@@ -46,13 +42,6 @@ public class RewardJPA extends BaseEntityJPA {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "badge_id")
     private BadgeJPA badge;
-    
-    public enum RewardType {
-        POINTS,
-        BADGE,
-        ACHIEVEMENT,
-        CUSTOM
-    }
 
     @PrePersist
     void prePersist() {

@@ -22,7 +22,6 @@ public class FindUserMissionByUserIdentifierImpl implements FindUserMission {
 
     @Override
     public UserMissionProgress byMissionIdAndStatus(String userIdentifier, String platform, String missionIdentifier, ProgressStatusEnum progressStatusEnum) {
-        //todo mudar exececao/adaptar
         return boundary
                 .byUserIdentifierAndMissionAndStatus(User.byIdentifier(userIdentifier), Mission.byIdentifier(missionIdentifier), progressStatusEnum)
                 .orElseThrow(() -> UserMissionNotFound.missionToStartNotFound(userIdentifier, missionIdentifier));

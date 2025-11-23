@@ -27,7 +27,7 @@ public class FindRankingDb implements FindRankingBoundary {
     public List<UserProgress> findByPlatform(String platform, RankingType rankingType) {
         PlatformJPA platformJPA = new PlatformJPA(platform);
         List<UserProgressJPA> results = switch (rankingType) {
-            case POINTS -> userProgressJpaPersistence.findByPlatformOrderByPoints(platformJPA);
+            case LEVEL -> userProgressJpaPersistence.findByPlatformOrderByCurrentLevel(platformJPA);
             case GOALS_COMPLETED -> userProgressJpaPersistence.findByPlatformOrderByGoalsCompleted(platformJPA);
             case MISSION_COMPLETED -> userProgressJpaPersistence.findByPlatformOrderByMissionsCompleted(platformJPA);
         };

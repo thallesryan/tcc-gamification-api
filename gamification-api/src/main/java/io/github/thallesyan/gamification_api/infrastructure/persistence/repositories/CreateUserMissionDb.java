@@ -20,7 +20,6 @@ public class CreateUserMissionDb implements CreateUserMissionBoundary {
         this.userMissionProgressPersistence = userMissionProgressPersistence;
     }
 
-    //todo criar entidade de retorno do salvamento do do usuario e missoes
     @Override
     public void createUserMissionProgress(User user, List<Mission> missions) {
         var userJPA = UserJPA.byIdentifier(user.getIdentifier());

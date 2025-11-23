@@ -7,7 +7,7 @@ public class RankingMapper {
     
     public static RankingType toRankingType(RankingByEnum rankingByEnum) {
         return switch (rankingByEnum) {
-            case POINTS -> RankingType.POINTS;
+            case LEVEL -> RankingType.LEVEL;
             case GOALS_COMPLETED -> RankingType.GOALS_COMPLETED;
             case MISSION_COMPLETED -> RankingType.MISSION_COMPLETED;
         };

@@ -14,8 +14,8 @@ import java.util.UUID;
 public interface UserProgressJpaPersistence extends JpaRepository<UserProgressJPA, UUID> {
     java.util.Optional<UserProgressJPA> findByUser_Identifier(UUID userIdentifier);
     
-    @Query("SELECT up FROM UserProgressJPA up WHERE up.user.platform = :platform ORDER BY up.totalPoints DESC")
-    List<UserProgressJPA> findByPlatformOrderByPoints(@Param("platform") PlatformJPA platform);
+    @Query("SELECT up FROM UserProgressJPA up WHERE up.user.platform = :platform ORDER BY up.currentLevel DESC")
+    List<UserProgressJPA> findByPlatformOrderByCurrentLevel(@Param("platform") PlatformJPA platform);
     
     @Query("SELECT up FROM UserProgressJPA up WHERE up.user.platform = :platform ORDER BY up.goalsCompleted DESC")
     List<UserProgressJPA> findByPlatformOrderByGoalsCompleted(@Param("platform") PlatformJPA platform);

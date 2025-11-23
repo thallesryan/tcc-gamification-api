@@ -35,23 +35,23 @@ class FindRankingImplTest {
     @BeforeEach
     void setUp() {
         UserProgress userProgress1 = new UserProgress();
-        userProgress1.setTotalPoints(100);
+        userProgress1.setCurrentLevel(5);
         UserProgress userProgress2 = new UserProgress();
-        userProgress2.setTotalPoints(200);
+        userProgress2.setCurrentLevel(10);
         userProgressList = Arrays.asList(userProgress1, userProgress2);
     }
 
     @Test
     @DisplayName("Deve buscar ranking por plataforma e tipo")
     void deveBuscarRankingPorPlataformaETipo() {
-        when(findRankingBoundary.findByPlatform("test-platform", RankingType.POINTS))
+        when(findRankingBoundary.findByPlatform("test-platform", RankingType.LEVEL))
                 .thenReturn(userProgressList);
 
-        List<UserProgress> result = findRankingImpl.findByPlatform("test-platform", RankingType.POINTS);
+        List<UserProgress> result = findRankingImpl.findByPlatform("test-platform", RankingType.LEVEL);
 
         assertNotNull(result);
         assertEquals(2, result.size());
-        verify(findRankingBoundary).findByPlatform("test-platform", RankingType.POINTS);
+        verify(findRankingBoundary).findByPlatform("test-platform", RankingType.LEVEL);
     }
 
     @Test
@@ -60,7 +60,7 @@ class FindRankingImplTest {
         when(findRankingBoundary.findByPlatform(anyString(), any(RankingType.class)))
                 .thenReturn(userProgressList);
 
-        findRankingImpl.findByPlatform("test-platform", RankingType.POINTS);
+        findRankingImpl.findByPlatform("test-platform", RankingType.LEVEL);
         findRankingImpl.findByPlatform("test-platform", RankingType.GOALS_COMPLETED);
         findRankingImpl.findByPlatform("test-platform", RankingType.MISSION_COMPLETED);
 
@@ -70,14 +70,14 @@ class FindRankingImplTest {
     @Test
     @DisplayName("Deve retornar lista vazia quando não houver ranking")
     void deveRetornarListaVaziaQuandoNaoHouverRanking() {
-        when(findRankingBoundary.findByPlatform("test-platform", RankingType.POINTS))
+        when(findRankingBoundary.findByPlatform("test-platform", RankingType.LEVEL))
                 .thenReturn(List.of());
 
-        List<UserProgress> result = findRankingImpl.findByPlatform("test-platform", RankingType.POINTS);
+        List<UserProgress> result = findRankingImpl.findByPlatform("test-platform", RankingType.LEVEL);
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
-        verify(findRankingBoundary).findByPlatform("test-platform", RankingType.POINTS);
+        verify(findRankingBoundary).findByPlatform("test-platform", RankingType.LEVEL);
     }
 }
 

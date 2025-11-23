@@ -37,7 +37,7 @@ public class RankingController {
     private final RankingApplication rankingApplication;
     private final PlatformValidationService platformValidationService;
 
-    @Operation(summary = "Obter ranking geral", description = "Retorna o ranking geral de usuários por pontos, goals ou missões completadas")
+    @Operation(summary = "Obter ranking geral", description = "Retorna o ranking geral de usuários por nível, goals ou missões completadas")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ranking obtido com sucesso"),
             @ApiResponse(responseCode = "400", description = "Parâmetros inválidos")
@@ -46,7 +46,7 @@ public class RankingController {
     public ResponseEntity<List<RankingEntryResponseDTO>> getRanking(
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform,
-            @Parameter(description = "Critério de ranking (POINTS, GOALS_COMPLETED, MISSION_COMPLETED)", required = true)
+            @Parameter(description = "Critério de ranking (LEVEL, GOALS_COMPLETED, MISSION_COMPLETED)", required = true)
             @RequestHeader("rankingBy") String rankingBy) {
         
         platformValidationService.validatePlatformAccess(platform);
@@ -102,7 +102,7 @@ public class RankingController {
 
     private Integer getValueByRankingCriteria(UserProgress up, RankingByEnum rankingBy) {
         return switch (rankingBy) {
-            case POINTS -> up.getTotalPoints();
+            case LEVEL -> up.getCurrentLevel();
             case GOALS_COMPLETED -> up.getGoalsCompleted();
             case MISSION_COMPLETED -> up.getMissionsCompleted();
         };

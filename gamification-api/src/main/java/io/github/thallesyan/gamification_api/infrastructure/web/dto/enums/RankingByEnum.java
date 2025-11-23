@@ -1,7 +1,7 @@
 package io.github.thallesyan.gamification_api.infrastructure.web.dto.enums;
 
 public enum RankingByEnum {
-    POINTS,
+    LEVEL,
     GOALS_COMPLETED,
     MISSION_COMPLETED;
 
@@ -13,7 +13,7 @@ public enum RankingByEnum {
         try {
             return RankingByEnum.valueOf(value.trim().toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("RankingBy inválido: " + value + ". Valores aceitos: POINTS, GOALS_COMPLETED, MISSION_COMPLETED");
+            throw new IllegalArgumentException("RankingBy inválido: " + value + ". Valores aceitos: LEVEL, GOALS_COMPLETED, MISSION_COMPLETED");
         }
     }
 }

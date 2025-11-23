@@ -27,10 +27,10 @@ public interface UserPersistenceMapper {
     User toUser(UserJPA userJPA);
 
     default LocalDate convertDateToLocalDate(Date date) {
-        return date != null ? date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate() : null;
+        return date != null ? date.toInstant().atZone(java.time.ZoneOffset.UTC).toLocalDate() : null;
     }
 
     default Date convertLocalDateToDate(LocalDate localDate) {
-        return localDate != null ? Date.from(localDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant()) : null;
+        return localDate != null ? Date.from(localDate.atStartOfDay(java.time.ZoneOffset.UTC).toInstant()) : null;
     }
 }

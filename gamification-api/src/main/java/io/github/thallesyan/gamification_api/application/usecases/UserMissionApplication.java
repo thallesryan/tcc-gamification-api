@@ -48,7 +48,6 @@ public class UserMissionApplication {
         this.userProgressPoints = userProgressPoints;
     }
 
-    //todo Criar retornos diferentes para caso todas missoes tenham sido associadas e quando so algumas estivetem. Ex em casos de missoes nao encontradas pelos ids
     public void associateUserMission(String userEmail, String platform, List<UUID> missionsIds) {
         var user = findUserByEmail.byEmail(userEmail, platform).orElseThrow(UserNotFoundException::new);
         var missionsSearch = findMission.byMissionsIds(missionsIds);
@@ -64,8 +63,6 @@ public class UserMissionApplication {
         }
     }
 
-    //todo quando for utilizado email, terá que passar platform também
-    //todo tornar user mission e progress unicos (só poderá ter uma missao com o id em progress, n deixar cadastrar outra)
     public UserMissionProgress startMissionByUserEmail(String userEmail, String platform, String missionId) {
         var userMission = findUserMissionByEmail.byMissionIdAndStatus(userEmail, platform, missionId, ProgressStatusEnum.ASSIGNED);
         return updateUserMission.startMission(userMission);

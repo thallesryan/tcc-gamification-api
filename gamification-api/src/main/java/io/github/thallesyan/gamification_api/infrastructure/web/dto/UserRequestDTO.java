@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -28,7 +28,7 @@ public class UserRequestDTO {
     private String email;
     
     @JsonFormat(pattern = "dd/MM/yyyy")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     
     @Valid
     private PlatformRequestDTO platform;

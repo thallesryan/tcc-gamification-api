@@ -29,7 +29,6 @@ public class PlatformValidationService {
             return;
         }
 
-        // Se nenhuma validação passou, lançar exceção
         throw new PlatformNotAuthorizedException(platform);
     }
 }
