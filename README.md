@@ -91,14 +91,14 @@ spring.datasource.password=password
 
 The API will be available at: `http://localhost:8081`
 
-## 📚 API Documentation
+## API Documentation
 
 Once the application is running, access the Swagger UI at:
 
 - **Swagger UI**: `http://localhost:8081/swagger-ui.html`
 - **API Docs**: `http://localhost:8081/api-docs`
 
-## 🔐 Authentication
+## Authentication
 
 All endpoints (except public ones) require a JWT token from Keycloak.
 
@@ -121,7 +121,7 @@ curl -X GET "http://localhost:8081/api/user/email/user@example.com" \
   -H "platform: YourPlatform"
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 This project follows **Clean Architecture** principles:
 
@@ -129,9 +129,8 @@ This project follows **Clean Architecture** principles:
 - **Application Layer**: Use cases and business logic orchestration
 - **Infrastructure Layer**: External implementations (web, persistence, security)
 
-For more details, see [CLEAN_ARCHITECTURE.md](CLEAN_ARCHITECTURE.md)
 
-## 🗂️ Main Endpoints
+## Main Endpoints
 
 - `/api/user/` - User management
 - `/api/platform/` - Platform management
@@ -142,7 +141,7 @@ For more details, see [CLEAN_ARCHITECTURE.md](CLEAN_ARCHITECTURE.md)
 - `/api/rarity/` - Rarity configuration
 - `/api/ranking/` - Ranking queries
 
-## 🔧 Configuration
+## Configuration
 
 ### Database
 
@@ -170,7 +169,7 @@ spring.security.oauth2.resourceserver.jwt.issuer-uri=http://127.0.0.1:8080/realm
 
 All request bodies are validated using Bean Validation annotations. Validation errors return detailed messages in English.
 
-## 🧪 Testing
+## Testing
 
 Run tests with:
 
