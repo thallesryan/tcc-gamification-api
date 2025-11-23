@@ -13,9 +13,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +40,7 @@ public class PlatformController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
     @PostMapping("create")
-    public ResponseEntity<PlatformCreationResponseDTO> createMission(@RequestBody PlatformCreationRequestDTO platformCreationRequestDTO) {
+    public ResponseEntity<PlatformCreationResponseDTO> createPlatform(@RequestBody @Valid PlatformCreationRequestDTO platformCreationRequestDTO, @AuthenticationPrincipal Jwt principal) {
         var platformCreated = platformApplication.createPlatform(platformMapper.toModel(platformCreationRequestDTO));
         return new ResponseEntity<>(platformMapper.toCreationResponseDTO(platformCreated), HttpStatus.CREATED);
     }

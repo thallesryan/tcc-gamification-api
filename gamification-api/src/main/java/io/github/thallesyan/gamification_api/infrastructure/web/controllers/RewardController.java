@@ -7,6 +7,7 @@ import io.github.thallesyan.gamification_api.domain.entities.foundation.Platform
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Reward;
 import io.github.thallesyan.gamification_api.domain.entities.reward.Badge;
 import io.github.thallesyan.gamification_api.domain.entities.reward.Rarity;
+import io.github.thallesyan.gamification_api.infrastructure.security.PlatformValidationService;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.RewardCreationRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.RewardResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.RewardMapper;
@@ -38,6 +39,7 @@ public class RewardController {
     private final RewardMapper rewardMapper;
     private final BadgeApplication badgeApplication;
     private final RarityApplication rarityApplication;
+    private final PlatformValidationService platformValidationService;
 
     @Operation(summary = "Criar recompensa", description = "Cria uma nova recompensa no sistema")
     @ApiResponses(value = {
@@ -51,6 +53,7 @@ public class RewardController {
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
 
+        platformValidationService.validatePlatformAccess(platform);
 
         var reward = rewardMapper.toReward(rewardCreationRequestDTO, platform);
 

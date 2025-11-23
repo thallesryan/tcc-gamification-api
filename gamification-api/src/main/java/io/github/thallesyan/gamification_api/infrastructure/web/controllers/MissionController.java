@@ -2,6 +2,7 @@ package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.MissionResponseDTO;
 import io.github.thallesyan.gamification_api.application.usecases.MissionApplication;
+import io.github.thallesyan.gamification_api.infrastructure.security.PlatformValidationService;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.*;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.MissionMapper;
 import io.github.thallesyan.gamification_api.application.exceptions.EntityNotFoundException;
@@ -28,6 +29,7 @@ public class MissionController {
 
     private final MissionApplication missionApplication;
     private final MissionMapper missionMapper;
+    private final PlatformValidationService platformValidationService;
 
     @Operation(summary = "Criar missão", description = "Cria uma nova missão no sistema")
     @ApiResponses(value = {
@@ -41,6 +43,7 @@ public class MissionController {
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
 
+        platformValidationService.validatePlatformAccess(platform);
         
         var createdMission = missionApplication.createMission(missionMapper.toMission(missionCreationRequestDTO, platform));
         return new ResponseEntity<>(missionMapper.toMissionResponseDTO(createdMission), HttpStatus.CREATED);

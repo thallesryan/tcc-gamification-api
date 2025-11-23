@@ -4,6 +4,7 @@ import io.github.thallesyan.gamification_api.application.dtos.CompletionTimeDTO;
 import io.github.thallesyan.gamification_api.application.usecases.RankingApplication;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserMissionProgress;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserProgress;
+import io.github.thallesyan.gamification_api.infrastructure.security.PlatformValidationService;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.enums.RankingByEnum;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.MissionRankingEntryResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.RankingEntryResponseDTO;
@@ -34,6 +35,7 @@ import java.util.stream.IntStream;
 public class RankingController {
 
     private final RankingApplication rankingApplication;
+    private final PlatformValidationService platformValidationService;
 
     @Operation(summary = "Obter ranking geral", description = "Retorna o ranking geral de usuários por pontos, goals ou missões completadas")
     @ApiResponses(value = {
@@ -46,6 +48,8 @@ public class RankingController {
             @RequestHeader("platform") String platform,
             @Parameter(description = "Critério de ranking (POINTS, GOALS_COMPLETED, MISSION_COMPLETED)", required = true)
             @RequestHeader("rankingBy") String rankingBy) {
+        
+        platformValidationService.validatePlatformAccess(platform);
         
         RankingByEnum rankingByEnum = RankingByEnum.fromString(rankingBy);
         List<UserProgress> userProgressList = rankingApplication.getRankingByPlatform(
@@ -69,6 +73,8 @@ public class RankingController {
             @PathVariable UUID missionId,
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
+        
+        platformValidationService.validatePlatformAccess(platform);
         
         List<UserMissionProgress> missionProgressList = rankingApplication
                 .getMissionRankingByMissionIdAndPlatform(missionId, platform);

@@ -1,5 +1,7 @@
 package io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress;
 
+import io.github.thallesyan.gamification_api.infrastructure.exceptions.InvalidProgressStatusException;
+
 public enum ProgressStatusEnum {
     ASSIGNED,
     IN_PROGRESS,
@@ -9,13 +11,13 @@ public enum ProgressStatusEnum {
 
     public static ProgressStatusEnum fromString(String value) {
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("O valor do status não pode ser nulo ou vazio.");
+            throw new InvalidProgressStatusException(value);
         }
 
         try {
             return ProgressStatusEnum.valueOf(value.trim().toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Status inválido: " + value);
+            throw new InvalidProgressStatusException(value);
         }
     }
 }

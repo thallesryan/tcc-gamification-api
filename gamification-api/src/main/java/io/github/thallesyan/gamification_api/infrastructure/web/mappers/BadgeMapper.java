@@ -9,7 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {RarityMapper.class})
 public interface BadgeMapper {
 
-    @Mapping(target = "identifier", source = "dto.identifier")
     @Mapping(target = "name", source = "dto.name")
     @Mapping(target = "description", source = "dto.description")
     @Mapping(target = "rarity.value", source = "dto.rarity")

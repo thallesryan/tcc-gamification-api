@@ -13,10 +13,10 @@ public interface RewardMapper {
     @Mapping(target = "name", source = "rewardCreationRequestDTO.name")
     @Mapping(target = "description", source = "rewardCreationRequestDTO.description")
     @Mapping(target = "points", source = "rewardCreationRequestDTO.points")
-    @Mapping(target = "badge.rarity.platform.name", source = "platform")
-    @Mapping(target = "badge.rarity.value", source = "rewardCreationRequestDTO.badge.rarity")
-    @Mapping(target = "badge.name", source = "rewardCreationRequestDTO.badge.name")
-    @Mapping(target = "badge.description", source = "rewardCreationRequestDTO.badge.description")
+//    @Mapping(target = "badge.rarity.platform.name", source = "platform")
+//    @Mapping(target = "badge.rarity.value", source = "rewardCreationRequestDTO.badge.rarity")
+//    @Mapping(target = "badge.name", source = "rewardCreationRequestDTO.badge.name")
+//    @Mapping(target = "badge.description", source = "rewardCreationRequestDTO.badge.description")
     @Mapping(target = "badge.identifier", source = "rewardCreationRequestDTO.badge.identifier")
     Reward toReward(RewardCreationRequestDTO rewardCreationRequestDTO, String platform);
 

@@ -3,6 +3,7 @@ package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 import io.github.thallesyan.gamification_api.application.exceptions.UserNotFoundException;
 import io.github.thallesyan.gamification_api.application.usecases.PlatformApplication;
 import io.github.thallesyan.gamification_api.application.usecases.UserApplication;
+import io.github.thallesyan.gamification_api.infrastructure.security.PlatformValidationService;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.LevelPointsResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserMapper;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.UserProgressMapper;
@@ -17,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ public class UserController {
     private final UserMapper userMapper;
     private final UserProgressMapper userProgressMapper;
     private final PlatformApplication platformApplication;
+    private final PlatformValidationService platformValidationService;
 
     @Operation(summary = "Registrar novo usuário", description = "Cria um novo usuário no sistema")
     @ApiResponses(value = {
@@ -40,7 +43,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
     @PostMapping("register")
-    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         User registeredUser = userApplication.registerUser(userMapper.toUser(userRequestDTO));
         return new ResponseEntity<>(userMapper.toUserResponseDTO(registeredUser), HttpStatus.CREATED);
     }
@@ -57,6 +60,8 @@ public class UserController {
             @PathVariable String email,
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
+
+        platformValidationService.validatePlatformAccess(platform);
 
         try {
             var userResponseDTO = userMapper.toUserResponseDTO(userApplication.findUserByEmail(email, platform));
@@ -78,6 +83,9 @@ public class UserController {
             @PathVariable String email,
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
+        
+        platformValidationService.validatePlatformAccess(platform);
+        
         try {
             var userProgressOpt = userApplication.findUserProgressByEmail(email, platform);
             if (userProgressOpt.isPresent()) {
@@ -103,6 +111,8 @@ public class UserController {
             @PathVariable Integer levelNumber,
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
+        
+        platformValidationService.validatePlatformAccess(platform);
         
         var platformEntity = platformApplication.findByName(platform);
         

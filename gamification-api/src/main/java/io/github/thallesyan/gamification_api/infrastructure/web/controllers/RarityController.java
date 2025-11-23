@@ -3,6 +3,7 @@ package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 import io.github.thallesyan.gamification_api.application.usecases.RarityApplication;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Platform;
 import io.github.thallesyan.gamification_api.domain.entities.reward.Rarity;
+import io.github.thallesyan.gamification_api.infrastructure.security.PlatformValidationService;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.RarityPointsRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.RarityResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.RarityMapper;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,7 @@ public class RarityController {
 
     private final RarityApplication rarityApplication;
     private final RarityMapper rarityMapper;
+    private final PlatformValidationService platformValidationService;
 
     @Operation(summary = "Listar todas as raridades", description = "Retorna todas as raridades de uma plataforma")
     @ApiResponses(value = {
@@ -39,6 +42,9 @@ public class RarityController {
     public ResponseEntity<List<RarityResponseDTO>> getAllRarities(
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
+        
+        platformValidationService.validatePlatformAccess(platform);
+        
         Platform platformEntity = new Platform(platform);
         List<RarityResponseDTO> rarities = rarityApplication.getAllRaritiesByPlatform(platformEntity).stream()
                 .map(rarityMapper::toRarityResponseDTO)
@@ -58,9 +64,11 @@ public class RarityController {
     })
     @PostMapping("points")
     public ResponseEntity<List<RarityResponseDTO>> associatePoints(
-            @RequestBody List<RarityPointsRequestDTO> rarityPointsRequestDTOList,
+            @RequestBody @Valid List<@Valid RarityPointsRequestDTO> rarityPointsRequestDTOList,
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
+        
+        platformValidationService.validatePlatformAccess(platform);
         
         Platform platformEntity = new Platform(platform);
 

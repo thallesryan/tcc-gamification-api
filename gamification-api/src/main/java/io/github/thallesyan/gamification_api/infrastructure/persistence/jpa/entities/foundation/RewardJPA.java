@@ -43,7 +43,7 @@ public class RewardJPA extends BaseEntityJPA {
     @Column(name = "max_uses_per_user")
     private Integer maxUsesPerUser;
     
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "badge_id")
     private BadgeJPA badge;
     

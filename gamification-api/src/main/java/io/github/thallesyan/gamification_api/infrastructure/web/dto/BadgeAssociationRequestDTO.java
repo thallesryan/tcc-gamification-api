@@ -1,15 +1,17 @@
 package io.github.thallesyan.gamification_api.infrastructure.web.dto;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class ResolveGoalRequestDTO {
-    @NotNull(message = "Goal ID cannot be null")
-    private Integer goalId;
+public class BadgeAssociationRequestDTO {
+
+    @NotNull
+    @NotEmpty
+    private String identifier;
 }

@@ -6,6 +6,7 @@ import io.github.thallesyan.gamification_api.domain.entities.foundation.Platform
 import io.github.thallesyan.gamification_api.domain.entities.reward.Badge;
 import io.github.thallesyan.gamification_api.domain.entities.reward.Rarity;
 import io.github.thallesyan.gamification_api.domain.entities.reward.RarityEnum;
+import io.github.thallesyan.gamification_api.infrastructure.security.PlatformValidationService;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.BadgeCreationRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.BadgeResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.BadgeMapper;
@@ -34,6 +35,7 @@ public class BadgeController {
 
     private final BadgeApplication badgeApplication;
     private final BadgeMapper badgeMapper;
+    private final PlatformValidationService platformValidationService;
 
     @Operation(summary = "Criar badge", description = "Cria um novo badge no sistema")
     @ApiResponses(value = {
@@ -46,6 +48,8 @@ public class BadgeController {
             @RequestBody @Valid BadgeCreationRequestDTO badgeCreationRequestDTO,
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
+
+        platformValidationService.validatePlatformAccess(platform);
 
         Badge badge = badgeMapper.toBadge(badgeCreationRequestDTO, platform);
 
@@ -64,6 +68,8 @@ public class BadgeController {
             @RequestParam("rarity") RarityEnum rarityEnum,
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
+        
+        platformValidationService.validatePlatformAccess(platform);
         
         Platform platformEntity = new Platform(platform);
         var badges = badgeApplication.findBadgesByRarity(rarityEnum, platformEntity).stream()

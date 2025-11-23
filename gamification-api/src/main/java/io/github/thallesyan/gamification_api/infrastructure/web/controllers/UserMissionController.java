@@ -3,6 +3,7 @@ package io.github.thallesyan.gamification_api.infrastructure.web.controllers;
 import io.github.thallesyan.gamification_api.application.exceptions.UserMissionNotFound;
 import io.github.thallesyan.gamification_api.application.usecases.UserMissionApplication;
 import io.github.thallesyan.gamification_api.infrastructure.exceptions.InvalidUuidException;
+import io.github.thallesyan.gamification_api.infrastructure.security.PlatformValidationService;
 import io.github.thallesyan.gamification_api.infrastructure.persistence.jpa.entities.progress.ProgressStatusEnum;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.BindUserMissionRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.MissionBinding;
@@ -22,6 +23,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,7 @@ public class UserMissionController {
     private final UserMissionApplication userMissionApplication;
     private final UserMissionMapper userMissionMapper;
     private final UserMissionGoalMapper userMissionGoalMapper;
+    private final PlatformValidationService platformValidationService;
 
     @Operation(summary = "Vincular missões ao usuário", description = "Associa uma ou mais missões a um usuário")
     @ApiResponses(value = {
@@ -47,7 +50,9 @@ public class UserMissionController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
     @PostMapping("bind-missions")
-    public ResponseEntity<MissionResponseDTO> bindMissionsToUser(@RequestBody BindUserMissionRequestDTO bindUserMissionRequestDTO) {
+    public ResponseEntity<MissionResponseDTO> bindMissionsToUser(@RequestBody @Valid BindUserMissionRequestDTO bindUserMissionRequestDTO) {
+        platformValidationService.validatePlatformAccess(bindUserMissionRequestDTO.getPlatform());
+        
         var missions = bindUserMissionRequestDTO.getMissions();
 
         var missionsIds = missions.stream().map(MissionBinding::getIdentifier).map(this::stringToUUID).collect(Collectors.toList());
@@ -65,9 +70,12 @@ public class UserMissionController {
     })
     @PostMapping("start-mission")
     public ResponseEntity<MissionStartResponseDTO> start(
-            @RequestBody StartMissionRequestDTO startMissionRequestDTO,
+            @RequestBody @Valid StartMissionRequestDTO startMissionRequestDTO,
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform) {
+        
+        platformValidationService.validatePlatformAccess(platform);
+        
         var userMission = switch (startMissionRequestDTO.getUserIdentification().getUserIdentifierType()){
             case EMAIL -> userMissionApplication.startMissionByUserEmail(startMissionRequestDTO.getUserIdentification().getUserIdentifierValue(),platform, startMissionRequestDTO.getMissionIdentifier());
             case IDENTIFIER -> userMissionApplication.startMissionByUserIdentifier(startMissionRequestDTO.getUserIdentification().getUserIdentifierValue(),platform, startMissionRequestDTO.getMissionIdentifier());
@@ -93,6 +101,8 @@ public class UserMissionController {
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform
     ) {
+        platformValidationService.validatePlatformAccess(platform);
+        
         try{
             var currentGoal = userMissionApplication
                     .getCurrentGoal(userEmail, platform, missionId)
@@ -129,6 +139,8 @@ public class UserMissionController {
             @RequestHeader("platform") String platform
     ) {
 
+        platformValidationService.validatePlatformAccess(platform);
+
         var userMission = userMissionApplication.resolveGoalInProgress(userEmail, platform, missionId);
         return new ResponseEntity<>(userMissionMapper.toStartMissionResponseDTO(userMission), HttpStatus.OK);
 
@@ -148,6 +160,8 @@ public class UserMissionController {
             @Parameter(description = "Nome da plataforma", required = true)
             @RequestHeader("platform") String platform
     ) {
+        platformValidationService.validatePlatformAccess(platform);
+        
         var missions = userMissionApplication.getMissionsInProgressByUserIdentifier(userEmail, platform, ProgressStatusEnum.fromString(missionStatus));
         if(missions.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         var missionProgressResponse = missions.stream().map(userMissionMapper::toMissionProgressResponseDTO).toList();
