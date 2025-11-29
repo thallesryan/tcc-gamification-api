@@ -18,7 +18,6 @@ public class UserReward {
     private Reward reward;
     private UserRewardStatus status = UserRewardStatus.EARNED;
     private LocalDateTime earnedAt;
-    private LocalDateTime expiresAt;
     private Integer pointsValue;
 
     public UserReward(User user, Reward reward) {

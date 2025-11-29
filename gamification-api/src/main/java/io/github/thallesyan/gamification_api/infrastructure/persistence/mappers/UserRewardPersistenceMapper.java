@@ -13,7 +13,6 @@ public interface UserRewardPersistenceMapper {
     @Mapping(target = "reward", source = "reward")
     @Mapping(target = "status", source = "status")
     @Mapping(target = "earnedAt", source = "earnedAt")
-    @Mapping(target = "expiresAt", source = "expiresAt")
     @Mapping(target = "pointsValue", source = "pointsValue")
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
@@ -24,7 +23,6 @@ public interface UserRewardPersistenceMapper {
     @Mapping(target = "reward", source = "reward")
     @Mapping(target = "status", source = "status")
     @Mapping(target = "earnedAt", source = "earnedAt")
-    @Mapping(target = "expiresAt", source = "expiresAt")
     @Mapping(target = "pointsValue", source = "pointsValue")
     UserReward toUserReward(UserRewardJPA userRewardJPA);
 }

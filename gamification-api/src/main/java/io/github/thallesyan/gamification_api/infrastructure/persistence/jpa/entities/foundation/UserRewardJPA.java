@@ -29,8 +29,6 @@ public class UserRewardJPA extends BaseEntityJPA {
     @Column(name = "earned_at", nullable = false)
     private java.time.LocalDateTime earnedAt;
     
-    @Column(name = "expires_at")
-    private java.time.LocalDateTime expiresAt;
     
     @Column(name = "points_value")
     private Integer pointsValue;
