@@ -105,12 +105,10 @@ All endpoints (except public ones) require a JWT token from Keycloak.
 ### Getting a Token
 
 ```bash
-curl -X POST "http://localhost:8080/realms/master/protocol/openid-connect/token" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "client_id=your-client-id" \
-  -d "username=your-username" \
-  -d "password=your-password" \
-  -d "grant_type=password"
+curl -L -X POST 'http://localhost:8081/api/auth/token' \
+-H 'Content-Type: application/x-www-form-urlencoded' \
+-d 'client_id=your-client-id' \
+-d 'client_secret=your-client-secret'
 ```
 
 ### Using the Token
