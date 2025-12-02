@@ -49,7 +49,7 @@ public class UpdateUserMissionDb implements UpdateUserMissionBoundary {
     public UserMissionGoalProgress updateGoalStatus(UserMissionGoalProgress userMissionGoalProgress, ProgressStatusEnum progressStatusEnum) {
         var id = userMissionGoalProgressPersistence.startUserMissionGoal(userMissionGoalProgress.getId(), ProgressStatusEnumJPA.getProgressJPAByProgressStatusEnum(progressStatusEnum));
         return userMissionGoalProgressPersistence
-                .findById(id)
+                .findById(userMissionGoalProgress.getId())
                 .map(userMissionGoalPersistenceMapper::JpaEntityToModel)
                 .orElse(null);
     }
