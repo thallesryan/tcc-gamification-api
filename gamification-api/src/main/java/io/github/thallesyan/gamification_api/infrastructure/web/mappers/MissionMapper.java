@@ -3,6 +3,7 @@ package io.github.thallesyan.gamification_api.infrastructure.web.mappers;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Mission;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Platform;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.MissionCreationRequestDTO;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.MissionUpdateRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.MissionResponseDTO;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -48,4 +49,14 @@ public interface MissionMapper {
             dto.setEstimatedDuration(String.format("Days: %d, hours: %d, minutes: %d, seconds: %d", days, hours, minutes, seconds));
         }
     }
+
+    @Mapping(target = "goals", ignore = true)
+    @Mapping(target = "identifier", ignore = true)
+    @Mapping(target = "title", source = "missionUpdateRequestDTO.title")
+    @Mapping(target = "description", source = "missionUpdateRequestDTO.description")
+    @Mapping(target = "points", source = "missionUpdateRequestDTO.points")
+    @Mapping(target = "rule", ignore = true)
+    @Mapping(target = "reward", ignore = true)
+    @Mapping(target = "estimatedDuration", ignore = true)
+    Mission toMission(MissionUpdateRequestDTO missionUpdateRequestDTO);
 }
