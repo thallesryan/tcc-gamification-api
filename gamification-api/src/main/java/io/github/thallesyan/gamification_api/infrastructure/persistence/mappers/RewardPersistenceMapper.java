@@ -13,10 +13,7 @@ public interface RewardPersistenceMapper {
     @Mapping(target = "description", source = "description")
     @Mapping(target = "points", source = "points")
     @Mapping(target = "badge", source = "badge")
-//    @Mapping(target = "rewardType", ignore = true)
     @Mapping(target = "isActive", ignore = true)
-    @Mapping(target = "expirationDays", ignore = true)
-    @Mapping(target = "maxUsesPerUser", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     RewardJPA toJPAEntity(Reward reward);

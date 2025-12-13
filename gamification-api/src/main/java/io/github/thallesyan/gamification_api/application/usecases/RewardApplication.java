@@ -8,6 +8,7 @@ import io.github.thallesyan.gamification_api.domain.services.CreateReward;
 import io.github.thallesyan.gamification_api.domain.services.FindBadge;
 import io.github.thallesyan.gamification_api.domain.services.FindRewards;
 import io.github.thallesyan.gamification_api.domain.services.FindUserRewards;
+import io.github.thallesyan.gamification_api.domain.services.UpdateReward;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,14 +23,17 @@ public class RewardApplication {
     private final FindBadge findBadge;
     private final FindUserRewards findUserRewards;
     private final UserApplication userApplication;
+    private final UpdateReward updateReward;
 
     public RewardApplication(CreateReward createReward, FindRewards findRewards, FindBadge findBadge, 
-                             FindUserRewards findUserRewards, UserApplication userApplication) {
+                             FindUserRewards findUserRewards, UserApplication userApplication,
+                             UpdateReward updateReward) {
         this.createReward = createReward;
         this.findRewards = findRewards;
         this.findBadge = findBadge;
         this.findUserRewards = findUserRewards;
         this.userApplication = userApplication;
+        this.updateReward = updateReward;
     }
 
     public Reward createReward(Reward reward) {
@@ -51,6 +55,14 @@ public class RewardApplication {
     public List<UserReward> findUserRewardsByEmail(String email, String platform) {
         var user = userApplication.findUserByEmail(email, platform);
         return findUserRewards.findByUser(user);
+    }
+
+    public Reward updateReward(UUID rewardId, Reward reward) {
+        return updateReward.updateReward(rewardId, reward);
+    }
+
+    public Reward updateReward(UUID rewardId, Reward reward, Boolean isActive) {
+        return updateReward.updateReward(rewardId, reward, isActive);
     }
 
     private Badge findBadge(Badge badge) {

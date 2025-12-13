@@ -3,6 +3,7 @@ package io.github.thallesyan.gamification_api.infrastructure.web.mappers;
 import io.github.thallesyan.gamification_api.domain.entities.foundation.Reward;
 import io.github.thallesyan.gamification_api.domain.entities.progress.UserReward;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.RewardCreationRequestDTO;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.RewardUpdateRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.RewardResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.UserRewardResponseDTO;
 import org.mapstruct.Mapper;
@@ -42,6 +43,10 @@ public interface RewardMapper {
     @Mapping(target = "earnedAt", source = "earnedAt")
     @Mapping(target = "pointsValue", source = "pointsValue")
     UserRewardResponseDTO toUserRewardResponseDTO(UserReward userReward);
+
+    @Mapping(target = "identifier", ignore = true)
+    @Mapping(target = "badge", ignore = true)
+    Reward toReward(RewardUpdateRequestDTO rewardUpdateRequestDTO);
 
     @org.mapstruct.Named("statusToString")
     default String statusToString(UserReward.UserRewardStatus status) {

@@ -33,12 +33,6 @@ public class RewardJPA extends BaseEntityJPA {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
     
-    @Column(name = "expiration_days")
-    private Integer expirationDays;
-    
-    @Column(name = "max_uses_per_user")
-    private Integer maxUsesPerUser;
-    
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "badge_id")
     private BadgeJPA badge;
