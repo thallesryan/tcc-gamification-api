@@ -8,7 +8,9 @@ import io.github.thallesyan.gamification_api.domain.entities.reward.Rarity;
 import io.github.thallesyan.gamification_api.domain.entities.reward.RarityEnum;
 import io.github.thallesyan.gamification_api.infrastructure.security.PlatformValidationService;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.BadgeCreationRequestDTO;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.BadgeUpdateRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.BadgeResponseDTO;
+import io.github.thallesyan.gamification_api.application.exceptions.EntityNotFoundException;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.BadgeMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -81,5 +84,31 @@ public class BadgeController {
         }
         
         return new ResponseEntity<>(badges, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Atualizar badge", description = "Atualiza parcialmente um badge existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Badge atualizado com sucesso",
+                    content = @Content(schema = @Schema(implementation = BadgeResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Badge não encontrado"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    })
+    @PatchMapping("/{id}")
+    public ResponseEntity<BadgeResponseDTO> updateBadge(
+            @Parameter(description = "ID do badge", required = true)
+            @PathVariable("id") UUID id,
+            @RequestBody @Valid BadgeUpdateRequestDTO badgeUpdateRequestDTO,
+            @Parameter(description = "Nome da plataforma", required = true)
+            @RequestHeader("platform") String platform) {
+
+        platformValidationService.validatePlatformAccess(platform);
+
+        badgeApplication.findBadgeById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Badge", id));
+
+        var badgeToUpdate = badgeMapper.toBadge(badgeUpdateRequestDTO);
+        var updatedBadge = badgeApplication.updateBadge(id, badgeToUpdate);
+        
+        return new ResponseEntity<>(badgeMapper.toBadgeResponseDTO(updatedBadge), HttpStatus.OK);
     }
 }

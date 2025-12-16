@@ -2,6 +2,7 @@ package io.github.thallesyan.gamification_api.infrastructure.web.mappers;
 
 import io.github.thallesyan.gamification_api.domain.entities.reward.Badge;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.BadgeCreationRequestDTO;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.BadgeUpdateRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.BadgeResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,5 +21,9 @@ public interface BadgeMapper {
     @Mapping(target = "description", source = "description")
     @Mapping(target = "rarity", source = "rarity")
     BadgeResponseDTO toBadgeResponseDTO(Badge badge);
+
+    @Mapping(target = "identifier", ignore = true)
+    @Mapping(target = "rarity", ignore = true)
+    Badge toBadge(BadgeUpdateRequestDTO badgeUpdateRequestDTO);
 }
 

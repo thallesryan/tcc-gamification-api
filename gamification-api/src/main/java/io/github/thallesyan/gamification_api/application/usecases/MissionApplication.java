@@ -5,6 +5,7 @@ import io.github.thallesyan.gamification_api.domain.entities.foundation.Reward;
 import io.github.thallesyan.gamification_api.domain.services.CreateMission;
 import io.github.thallesyan.gamification_api.domain.services.FindMission;
 import io.github.thallesyan.gamification_api.domain.services.FindRewards;
+import io.github.thallesyan.gamification_api.domain.services.UpdateMission;
 import io.github.thallesyan.gamification_api.application.exceptions.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -17,13 +18,16 @@ public class MissionApplication {
     private final CreateMission createMission;
     private final FindMission findMission;
     private final FindRewards findRewards;
+    private final UpdateMission updateMission;
 
     public MissionApplication(CreateMission createMission,
                               FindMission findMission,
-                              FindRewards findRewards) {
+                              FindRewards findRewards,
+                              UpdateMission updateMission) {
         this.createMission = createMission;
         this.findMission = findMission;
         this.findRewards = findRewards;
+        this.updateMission = updateMission;
     }
 
     public Mission createMission(Mission mission) {
@@ -33,6 +37,10 @@ public class MissionApplication {
 
     public Optional<Mission> findById(UUID missionId) {
         return findMission.byMissionId(missionId);
+    }
+
+    public Mission updateMission(UUID missionId, Mission mission, Integer difficultyLevel) {
+        return updateMission.updateMission(missionId, mission, difficultyLevel);
     }
 
     private void validateRewardExists(Reward reward) {

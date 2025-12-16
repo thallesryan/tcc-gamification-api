@@ -31,6 +31,14 @@ public class MissionController {
     private final MissionMapper missionMapper;
     private final PlatformValidationService platformValidationService;
 
+    private UUID parseUUID(String id) {
+        try {
+            return UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("ID inválido: " + id);
+        }
+    }
+
     @Operation(summary = "Criar missão", description = "Cria uma nova missão no sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Missão criada com sucesso",
@@ -58,10 +66,38 @@ public class MissionController {
     @GetMapping("{id}")
     public ResponseEntity<MissionResponseDTO> findMissionById(
             @Parameter(description = "ID da missão", required = true)
-            @PathVariable UUID id) {
-        var mission = missionApplication.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Mission", id));
+            @PathVariable String id) {
+        UUID missionId = parseUUID(id);
+        var mission = missionApplication.findById(missionId)
+                .orElseThrow(() -> new EntityNotFoundException("Mission", missionId));
         
         return new ResponseEntity<>(missionMapper.toMissionResponseDTO(mission), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Atualizar missão", description = "Atualiza parcialmente uma missão existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Missão atualizada com sucesso",
+                    content = @Content(schema = @Schema(implementation = MissionResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Missão não encontrada"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    })
+    @PatchMapping("{id}")
+    public ResponseEntity<MissionResponseDTO> updateMission(
+            @Parameter(description = "ID da missão", required = true)
+            @PathVariable String id,
+            @RequestBody @Valid MissionUpdateRequestDTO missionUpdateRequestDTO,
+            @Parameter(description = "Nome da plataforma", required = true)
+            @RequestHeader("platform") String platform) {
+
+        platformValidationService.validatePlatformAccess(platform);
+
+        UUID missionId = parseUUID(id);
+        missionApplication.findById(missionId)
+                .orElseThrow(() -> new EntityNotFoundException("Mission", missionId));
+
+        var missionToUpdate = missionMapper.toMission(missionUpdateRequestDTO);
+        var updatedMission = missionApplication.updateMission(missionId, missionToUpdate, missionUpdateRequestDTO.getDifficultyLevel());
+        
+        return new ResponseEntity<>(missionMapper.toMissionResponseDTO(updatedMission), HttpStatus.OK);
     }
 }

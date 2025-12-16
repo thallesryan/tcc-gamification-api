@@ -9,7 +9,9 @@ import io.github.thallesyan.gamification_api.domain.entities.reward.Badge;
 import io.github.thallesyan.gamification_api.domain.entities.reward.Rarity;
 import io.github.thallesyan.gamification_api.infrastructure.security.PlatformValidationService;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.RewardCreationRequestDTO;
+import io.github.thallesyan.gamification_api.infrastructure.web.dto.RewardUpdateRequestDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.RewardResponseDTO;
+import io.github.thallesyan.gamification_api.application.exceptions.EntityNotFoundException;
 import io.github.thallesyan.gamification_api.infrastructure.web.dto.response.UserRewardResponseDTO;
 import io.github.thallesyan.gamification_api.infrastructure.web.mappers.RewardMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -127,6 +129,36 @@ public class RewardController {
         } catch (io.github.thallesyan.gamification_api.application.exceptions.UserNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @Operation(summary = "Atualizar recompensa", description = "Atualiza parcialmente uma recompensa existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recompensa atualizada com sucesso",
+                    content = @Content(schema = @Schema(implementation = RewardResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Recompensa não encontrada"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    })
+    @PatchMapping("/{id}")
+    public ResponseEntity<RewardResponseDTO> updateReward(
+            @Parameter(description = "ID da recompensa", required = true)
+            @PathVariable("id") UUID id,
+            @RequestBody @Valid RewardUpdateRequestDTO rewardUpdateRequestDTO,
+            @Parameter(description = "Nome da plataforma", required = true)
+            @RequestHeader("platform") String platform) {
+
+        platformValidationService.validatePlatformAccess(platform);
+
+        rewardApplication.findRewardById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Reward", id));
+
+        var rewardToUpdate = rewardMapper.toReward(rewardUpdateRequestDTO);
+        var updatedReward = rewardApplication.updateReward(
+                id, 
+                rewardToUpdate, 
+                rewardUpdateRequestDTO.getIsActive()
+        );
+        
+        return new ResponseEntity<>(rewardMapper.toRewardResponseDTO(updatedReward), HttpStatus.OK);
     }
 }
 
